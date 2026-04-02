@@ -1,0 +1,262 @@
+{
+  "accordion.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "alert-dialog.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "alert.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "aspect-ratio.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "avatar.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "badge.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "breadcrumb.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "button.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "alert-dialog.tsx",
+      "calendar.tsx",
+      "carousel.tsx",
+      "pagination.tsx",
+      "sidebar.tsx"
+    ]
+  },
+  "calendar.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "card.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "carousel.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "chart.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "checkbox.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "collapsible.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "command.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "context-menu.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "dialog.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "command.tsx"
+    ]
+  },
+  "drawer.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "dropdown-menu.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "form.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "hover-card.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "input-otp.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "input.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "sidebar.tsx"
+    ]
+  },
+  "label.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "form.tsx"
+    ]
+  },
+  "menubar.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "navigation-menu.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "pagination.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "popover.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "progress.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "radio-group.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "resizable.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "scroll-area.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "select.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "separator.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "sidebar.tsx"
+    ]
+  },
+  "sheet.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "sidebar.tsx"
+    ]
+  },
+  "sidebar.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "skeleton.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "sidebar.tsx"
+    ]
+  },
+  "slider.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "sonner.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "switch.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "table.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "tabs.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "textarea.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "toggle-group.tsx": {
+    "externalRefs": [],
+    "internalRefs": []
+  },
+  "toggle.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "toggle-group.tsx"
+    ]
+  },
+  "tooltip.tsx": {
+    "externalRefs": [],
+    "internalRefs": [
+      "sidebar.tsx"
+    ]
+  },
+  "use-mobile.ts": {
+    "externalRefs": [],
+    "internalRefs": [
+      "sidebar.tsx"
+    ]
+  },
+  "utils.ts": {
+    "externalRefs": [],
+    "internalRefs": [
+      "accordion.tsx",
+      "alert-dialog.tsx",
+      "alert.tsx",
+      "avatar.tsx",
+      "badge.tsx",
+      "breadcrumb.tsx",
+      "button.tsx",
+      "calendar.tsx",
+      "card.tsx",
+      "carousel.tsx",
+      "chart.tsx",
+      "checkbox.tsx",
+      "command.tsx",
+      "context-menu.tsx",
+      "dialog.tsx",
+      "drawer.tsx",
+      "dropdown-menu.tsx",
+      "form.tsx",
+      "hover-card.tsx",
+      "input-otp.tsx",
+      "input.tsx",
+      "label.tsx",
+      "menubar.tsx",
+      "navigation-menu.tsx",
+      "pagination.tsx",
+      "popover.tsx",
+      "progress.tsx",
+      "radio-group.tsx",
+      "resizable.tsx",
+      "scroll-area.tsx",
+      "select.tsx",
+      "separator.tsx",
+      "sheet.tsx",
+      "sidebar.tsx",
+      "skeleton.tsx",
+      "slider.tsx",
+      "switch.tsx",
+      "table.tsx",
+      "tabs.tsx",
+      "textarea.tsx",
+      "toggle-group.tsx",
+      "toggle.tsx",
+      "tooltip.tsx"
+    ]
+  }
+}

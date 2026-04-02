@@ -1,17 +1,27 @@
-import { ReactNode } from 'react';
-import { Clock, Users, BookOpen } from 'lucide-react';
+import { useState, ReactNode } from 'react';
+import { Clock, Users, BookOpen, ChevronDown, BarChart2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { WeeklyGrid } from '../components/WeeklyGrid';
 import { DynamicFilters } from '../components/DynamicFilters';
 import { CourseDetailModal } from '../components/CourseDetailModal';
-import { COURSES, COURSE_COLORS, DAYS, DAY_LABELS, DayKey } from '../data/mockData';
-
-const MY_LECTURER = 'Dr. Maria Garcia';
+import { COURSE_COLORS, DAYS, DAY_LABELS, DayKey, Course } from '../data/mockData';
+import { Navigate } from 'react-router';
+import { LoginScreen } from '../components/LoginScreen';
 
 export function AcademicView() {
-  const { darkMode, selectedCourse } = useApp();
+  const {
+    darkMode, selectedCourse, scheduledCourses, scheduleStats,
+    currentUser
+  } = useApp();
+  const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
 
-  const myCourses = COURSES.filter(c => c.lecturer === MY_LECTURER);
+  if (!currentUser || currentUser.role !== 'academic') {
+    return <LoginScreen portalType="academic" />;
+  }
+
+  const currentLecturer = currentUser.name;
+
+  const myCourses = scheduledCourses.filter(c => c.lecturer === currentLecturer);
   const totalHours = myCourses.reduce((sum, c) => {
     const [sh, sm] = c.startTime.split(':').map(Number);
     const [eh, em] = c.endTime.split(':').map(Number);
@@ -31,19 +41,42 @@ export function AcademicView() {
     >
       {/* Top bar */}
       <div
-        className="flex items-center justify-between px-5 py-2.5 border-b shrink-0"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-3 sm:px-5 py-3 sm:py-2.5 border-b shrink-0"
         style={{ backgroundColor: surface, borderColor: border }}
       >
-        <div>
+        <div className="flex items-center justify-between w-full sm:w-auto">
+          <div>
           <h1 style={{ fontSize: '15px', fontWeight: 700, color: text, letterSpacing: '-0.02em' }}>
-            My Teaching Schedule
+            Öğretim Üyesi Ders Programı
           </h1>
-          <p style={{ fontSize: '11px', color: muted }}>
-            {MY_LECTURER} · Spring 2026 · Week 10
-          </p>
+          <div className="flex items-center gap-2 mt-0.5">
+            {/* Lecturer selector */}
+            <div className="relative">
+              <select
+                disabled
+                value={currentLecturer}
+                className="appearance-none pr-5 pl-1 py-0.5 rounded text-[11px] font-medium cursor-not-allowed focus:outline-none"
+                style={{
+                  backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
+                  color: darkMode ? '#93c5fd' : '#3b82f6',
+                  border: `1px solid ${darkMode ? '#334155' : '#e2e8f0'}`,
+                }}
+              >
+                  <option value={currentLecturer}>{currentLecturer}</option>
+              </select>
+              <ChevronDown 
+                className="w-3 h-3 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ color: darkMode ? '#64748b' : '#94a3b8' }}
+              />
+            </div>
+            <span style={{ fontSize: '11px', color: muted }}>
+              · Bahar 2026
+            </span>
+          </div>
+        </div>
         </div>
 
-        {/* Summary chips */}
+        {/* Desktop Summary chips */}
         <div className="hidden sm:flex items-center gap-2">
           <SummaryChip
             icon={<Clock className="w-3 h-3" />}
@@ -64,6 +97,18 @@ export function AcademicView() {
             color="#16a34a"
           />
         </div>
+
+        {/* Mobile Panel Toggle */}
+        <button
+          onClick={() => setIsMobilePanelOpen(true)}
+          className="flex sm:hidden items-center justify-center p-2 rounded-lg font-medium transition-colors ml-auto mt-2"
+          style={{
+            backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
+            color: darkMode ? '#f1f5f9' : '#0f172a',
+          }}
+        >
+          <BarChart2 className="w-4 h-4" />
+        </button>
       </div>
 
       {/* Filters (lecturer locked) */}
@@ -71,10 +116,10 @@ export function AcademicView() {
 
       {/* Main: sidebar + grid */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar: day-by-day breakdown */}
+        {/* Desktop Sidebar: day-by-day breakdown */}
         <aside
           className="hidden lg:flex flex-col border-r shrink-0 overflow-y-auto"
-          style={{ width: 200, backgroundColor: surface, borderColor: border }}
+          style={{ width: 220, backgroundColor: surface, borderColor: border }}
         >
           <div className="px-3 py-2.5 border-b" style={{ borderColor: border }}>
             <p style={{ fontSize: '10px', fontWeight: 700, color: muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
@@ -121,7 +166,72 @@ export function AcademicView() {
         </aside>
 
         {/* Weekly Grid filtered to this lecturer */}
-        <WeeklyGrid filterFn={c => c.lecturer === MY_LECTURER} />
+        <WeeklyGrid filterFn={c => c.lecturer === currentLecturer} />
+
+        {/* Mobile Stats panel overlay */}
+        {isMobilePanelOpen && (
+          <div className="lg:hidden absolute inset-0 z-50 flex justify-start">
+            <div 
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm" 
+              onClick={() => setIsMobilePanelOpen(false)}
+            />
+            <div className="relative h-full animate-in slide-in-from-left duration-200 ease-out shadow-2xl bg-white dark:bg-slate-900 border-r"
+                 style={{ width: '85vw', maxWidth: 320, backgroundColor: surface, borderColor: border }}>
+              <button
+                onClick={() => setIsMobilePanelOpen(false)}
+                className="absolute top-3 right-[-40px] p-2 rounded-full shadow-lg border border-white/20"
+                style={{ backgroundColor: darkMode ? '#0f172a' : '#ffffff', color: darkMode ? '#f1f5f9' : '#0f172a' }}
+              >
+                <X className="w-4 h-4" />
+              </button>
+              
+              <div className="flex flex-col h-full overflow-y-auto">
+                <div className="px-3 py-2.5 border-b" style={{ borderColor: border }}>
+                  <p style={{ fontSize: '10px', fontWeight: 700, color: muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                    Daily Summary
+                  </p>
+                </div>
+                <div className="p-2 space-y-1.5 flex-1">
+                  {DAYS.map(day => {
+                    const dayCourses = myCourses.filter(c => c.day === day);
+                    return (
+                      <DaySummaryCard
+                        key={day}
+                        day={day}
+                        courses={dayCourses}
+                        darkMode={darkMode}
+                      />
+                    );
+                  })}
+                </div>
+
+                {/* Week total */}
+                <div
+                  className="p-3 border-t shrink-0"
+                  style={{ borderColor: border }}
+                >
+                  <p style={{ fontSize: '10px', fontWeight: 600, color: muted, marginBottom: 8 }}>
+                    Weekly Total
+                  </p>
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between">
+                      <span style={{ fontSize: '11px', color: muted }}>Teaching hours</span>
+                      <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{totalHours}h</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ fontSize: '11px', color: muted }}>Sessions</span>
+                      <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{myCourses.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span style={{ fontSize: '11px', color: muted }}>Students</span>
+                      <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{totalStudents}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {selectedCourse && <CourseDetailModal />}
@@ -151,7 +261,7 @@ function SummaryChip({
 function DaySummaryCard({
   day, courses, darkMode,
 }: {
-  day: DayKey; courses: typeof COURSES; darkMode: boolean;
+  day: DayKey; courses: Course[]; darkMode: boolean;
 }) {
   const text = darkMode ? '#f1f5f9' : '#0f172a';
   const muted = darkMode ? '#64748b' : '#94a3b8';
@@ -199,7 +309,7 @@ function DaySummaryCard({
               />
               <div>
                 <p style={{ fontSize: '9px', fontWeight: 500, color: text, lineHeight: 1.3 }}>
-                  {c.name.split(' ').slice(0, 3).join(' ')}
+                  {c.code}
                 </p>
                 <p style={{ fontSize: '9px', color: muted }}>
                   {c.startTime}–{c.endTime}

@@ -1,0 +1,22 @@
+== DEKANLIK ==
+ID: dekan, Şifre: dekan
+ID: dekan_yrd, Şifre: dekan
+
+== BÖLÜM SEKRETERLERİ ==
+ID: bil_sekreter, Şifre: bil
+ID: yaz_sekreter, Şifre: yaz
+
+== AKADEMİK ==
+Emre Sümer -> ID: esumer, Şifre: esumer123
+Çağatay Berke Erdaş -> ID: cerdas, Şifre: cerdas123
+Tolga Tarkan Ölmez -> ID: tolmez, Şifre: tolmez123
+Nizami Gasilov -> ID: ngasilov, Şifre: ngasilov123
+Oğul Göçmen -> ID: ogocmen, Şifre: ogocmen123
+Iclal Çetin Taş -> ID: itas, Şifre: itas123
+Elmas Burcu Mamak Ekinci -> ID: eekinci, Şifre: eekinci123
+Murat Hacıömeroğlu -> ID: mhaciomeroglu, Şifre: mhaciomeroglu123
+Didem Ölçer -> ID: dolcer, Şifre: dolcer123
+Alperen Öztürk -> ID: aozturk, Şifre: aozturk123
+Mehmet Dikmen -> ID: mdikmen, Şifre: mdikmen123
+Atilla Aşçıoğlu -> ID: aascioglu, Şifre: aascioglu123
+Mustafa Sert -> ID:msert, Şifre: msert123

@@ -3,7 +3,7 @@ import { Root } from './pages/Root';
 import { Landing } from './pages/Landing';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { AcademicView } from './pages/AcademicView';
-import { StudentView } from './pages/StudentView';
+import { CourseCatalog } from './pages/CourseCatalog';
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Landing },
       { path: 'admin', Component: AdminDashboard },
       { path: 'academic', Component: AcademicView },
-      { path: 'student', Component: StudentView },
+      { path: 'courses', Component: CourseCatalog },
     ],
   },
 ]);

@@ -1,0 +1,46 @@
+﻿code|name|hour|semester|seciton|lecturer
+BİL110|BİLGİSAYAR MÜHENDİSLİĞİNE GİRİŞ|2|1|1|emre sümer
+BİL122|İLERİ PROGRAMLAMA|4|2|1|çağatay berke erdaş
+BİL124|İLERİ PROGRAMLAMA UYGULAMALARI|2|2|5|çağatay berke erdaş
+BİL172|YAŞAM BİLİMLERİ VE BİLGİSAYAR MÜHENDİSLİĞİ|3|2|2|tolga tarkan ölmez
+BİL231|AYRIK YAPILAR|4|3|2|nizami gasilov
+BİL265|VERİ YAPILARI|4|3|2|oğul göçmen
+BİL275|SAYISAL MANTIK TASARIMI|5|3|2|iclal çetin taş
+BİL210|ELEKTRONİĞE GİRİŞ|5|4|2|oğul göçmen
+BİL218|BİLGİSAYAR ORGANİZASYONU|4|4|2|iclal çetin taş
+BİL240|PROGRAMLAMA DİLLERİ|4|4|1|emre sümer
+MAT250|OLASILIK VE İSTATİSTİK|4|4|2|elmas burcu mamak ekinci
+MAT286|BİLGİSAYAR MÜHENDİSLİĞİ İÇİN MATEMATİK|4|4|2|nizami gasilov
+BİL324|MİKROİŞLEMCİLER|5|5|2|emre sümer
+BİL343|NESNE YÖNELİMLİ PROGRAMLAMA|4|5|1|murat hacıömeroğlu
+BİL367|ALGORİTMALAR|4|5|2|didem ölçer
+MAT311|SAYISAL ANALİZ TEKNİKLERİ|5|5|2|elmas burcu mamak ekinci
+SOS204|İŞLETME|3|5|1|alperen öztürk
+BİL001|TEKNİK SEÇİMLİK I|3|6|1|anonim
+BİL007|SOSYAL SEÇİMLİK|3|6|1|anonim
+BİL332|İŞLETİM SİSTEMLERİ|4|6|2|mehmet dikmen
+BİL344|VERİTABANI SİSTEMLERİ|5|6|1|murat hacıömeroğlu
+BİL386|YAZILIM MÜHENDİSLİĞİNE GİRİŞ|5|6|2|didem ölçer
+BİL002|TEKNİK SEÇİMLİK II|3|7|1|anonim
+BİL003|TEKNİK SEÇİMLİK III|3|7|1|anonim
+BİL499|BİLGİSAYAR AĞLARI|5|7|2|çağatay berke erdaş
+BİL004|TEKNİK SEÇİMLİK IV|3|8|1|anonim
+BİL005|TEKNİK SEÇİMLİK V|3|8|1|anonim
+BİL006|TEKNİK SEÇİMLİK VI|3|8|1|anonim
+BİL482|ETİK,TOPLUM VE MESLEK|3|8|1|atilla aşçıoğlu
+SOS321|İLETİŞİM|3|8|1|anonim
+SOS322|İŞLETME YÖNETİMİNE GİRİŞ|3|8|1|anonim
+MAT210|DOĞRUSAL CEBİR|3|2|2|anonim
+MAT151|MATEMATİKSEL ANALİZ I|5|1|3|anonim
+MAT152|MATEMATİKSEL ANALİZ II|5|2|3|anonim
+BİL101|BİLGİSAYAR YAZILIMI I|4|1|3|anonim
+BİL105|PROGRAMLAMA LABORATUVARI I|2|1|5|anonim
+ENG199|ADVANCED ENGLISH I|4|1|4|anonim
+FİZ103|MEKANİK LABORATUVARI|2|1|2|anonim
+FİZ105|GENEL FİZİK I|4|1|2|anonim
+ENG200|ADVANCED ENGLISH II|4|3|4|anonim
+ENG330|DEVELOPING ENGLISH LANGUAGE SKILLS|4|6|4|anonim
+ENG460|PRESENTATION SKILLS|4|7|4|anonim
+FİZ104|ELEKTRİK LABORATUVARI|2|2|2|anonim
+FİZ110|GENEL FİZİK II|4|2|2|anonim
+SOS203|EKONOMİ|3|4|1|anonim

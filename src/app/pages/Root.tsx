@@ -7,7 +7,7 @@ export function Root() {
     <AppProvider>
       <div className="h-screen flex flex-col overflow-hidden">
         <Header />
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col">
           <Outlet />
         </main>
       </div>

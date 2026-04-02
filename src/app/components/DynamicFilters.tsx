@@ -1,23 +1,39 @@
-  import { Search, X, SlidersHorizontal } from 'lucide-react';
+import { useState } from 'react';
+import { Search, SlidersHorizontal, ChevronDown, ChevronUp, X } from 'lucide-react';
   import { useApp } from '../context/AppContext';
-  import { DEPARTMENTS, CLASS_LEVELS, LECTURERS, COURSES } from '../data/mockData';
-  
-  // Available blocks
-  const BLOCKS = ['A', 'B', 'C', 'D', 'E', 'F'];
+
 interface DynamicFiltersProps {
   showSearch?: boolean;
   compact?: boolean;
 }
 
 export function DynamicFilters({ showSearch = true, compact = false }: DynamicFiltersProps) {
-  const { darkMode, filters, setFilter, resetFilters, userRole } = useApp();
+  const { darkMode, filters, setFilter, resetFilters, scheduledCourses, currentUser } = useApp();
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  const isSecretary = currentUser?.role === 'department_secretary';
+  const secretaryDept = currentUser?.department;
 
   const hasActiveFilters = Object.values(filters).some(v => v !== '');
+
+  // Dynamically derived lists from scheduledCourses
+  const departments = Array.from(new Set(scheduledCourses.map(c => c.department).filter(Boolean))).sort();
+  const lecturers = Array.from(new Set(scheduledCourses.map(c => c.lecturer).filter(Boolean))).sort();
+  const classLevels = Array.from(new Set(scheduledCourses.map(c => c.classLevel).filter(Boolean))).sort();
+
+  const blocks = Array.from(
+    new Set(
+      scheduledCourses
+        .map(c => c.room)
+        .filter(Boolean)
+        .map(room => room!.split('-')[0])
+    )
+  ).sort();
 
   // Derived available rooms based on selected block
   const availableRooms = Array.from(
     new Set(
-      COURSES
+      scheduledCourses
         .map(c => c.room)
         .filter(room => room && room.startsWith(filters.block))
     )
@@ -36,24 +52,37 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
 
   return (
     <div
-      className="flex flex-wrap items-center gap-2 px-4 py-2.5 border-b"
+      className="flex flex-col gap-2.5 px-3 sm:px-4 py-3 sm:py-2.5 border-b"
       style={{
         backgroundColor: darkMode ? '#0f172a' : '#ffffff',
         borderColor: darkMode ? '#1e293b' : '#e2e8f0',
       }}
     >
-      <div className="flex items-center gap-1.5 mr-1" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
-        <SlidersHorizontal className="w-3.5 h-3.5" />
-        {!compact && (
-          <span className="text-xs font-medium" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
-            Filters
-          </span>
-        )}
-      </div>
+      <div className="flex flex-wrap items-center gap-2.5 w-full">
+        <div className="flex items-center gap-1.5 mr-auto lg:mr-1" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
+          <SlidersHorizontal className="w-3.5 h-3.5" />
+          {!compact && (
+            <span className="text-xs font-medium" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
+              Filters
+            </span>
+          )}
+        </div>
 
-      {/* Search */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="lg:hidden flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors border"
+          style={{
+            ...selectStyle,
+            borderColor: darkMode ? '#334155' : '#e2e8f0',
+          }}
+        >
+          {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          {isExpanded ? 'Gizle' : 'Filtreler'}
+        </button>
+
+        {/* Search */}
       {showSearch && (
-        <div className="relative flex-1 min-w-36 max-w-52">
+        <div className="relative w-full sm:flex-1 sm:min-w-36 sm:max-w-[240px]">
           <Search
             className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5"
             style={{ color: darkMode ? '#64748b' : '#94a3b8' }}
@@ -68,18 +97,25 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
           />
         </div>
       )}
+      </div>
 
+      <div className={`${isExpanded ? 'flex' : 'hidden'} lg:flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 animate-in slide-in-from-top-2 duration-200`}>
       {/* Department */}
       <select
-        value={filters.department}
+        disabled={isSecretary}
+        value={isSecretary && secretaryDept ? secretaryDept : filters.department}
         onChange={e => setFilter('department', e.target.value)}
-        className="px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
+        className={`px-2.5 py-1.5 rounded-lg border text-xs focus:outline-none ${isSecretary ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'}`}
         style={selectStyle}
       >
-        <option value="">All Departments</option>
-        {DEPARTMENTS.map(d => (
-          <option key={d} value={d}>{d}</option>
-        ))}
+        {!isSecretary && <option value="">All Departments</option>}
+        {isSecretary && secretaryDept ? (
+          <option value={secretaryDept}>{secretaryDept}</option>
+        ) : (
+          departments.map(d => (
+            <option key={d} value={d}>{d}</option>
+          ))
+        )}
       </select>
 
       {/* Lecturer */}
@@ -90,8 +126,8 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         style={selectStyle}
       >
         <option value="">All Lecturers</option>
-        {LECTURERS.map(l => (
-          <option key={l.id} value={l.name}>{l.name}</option>
+        {lecturers.map(name => (
+          <option key={name} value={name}>{name}</option>
         ))}
       </select>
 
@@ -103,14 +139,13 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         style={selectStyle}
       >
         <option value="">All Classes</option>
-        {CLASS_LEVELS.map(c => (
+        {classLevels.map(c => (
           <option key={c} value={c}>{c}</option>
         ))}
       </select>
 
-      {/* Blocks & Rooms (Admins/Academic Only) */}
-      {(userRole === 'admin' || userRole === 'academic') && (
-        <>
+      {/* Blocks & Rooms */}
+      <>
           <select
             value={filters.block}
             onChange={e => {
@@ -121,7 +156,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
             style={selectStyle}
           >
             <option value="">All Blocks</option>
-            {BLOCKS.map(b => (
+            {blocks.map(b => (
               <option key={b} value={b}>Block {b}</option>
             ))}
           </select>
@@ -140,22 +175,22 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
             </select>
           )}
         </>
-      )}
 
       {/* Reset */}
       {hasActiveFilters && (
         <button
           onClick={resetFilters}
-          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors"
+          className="flex items-center justify-center gap-1 px-3 py-2 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-medium transition-colors w-full sm:w-auto"
           style={{
             backgroundColor: darkMode ? '#450a0a' : '#fee2e2',
             color: darkMode ? '#f87171' : '#b91c1c',
           }}
         >
           <X className="w-3 h-3" />
-          Clear
+          Reset
         </button>
       )}
+      </div>
 
       {/* Active filter pills */}
       <div className="flex flex-wrap items-center gap-1.5 ml-1">
