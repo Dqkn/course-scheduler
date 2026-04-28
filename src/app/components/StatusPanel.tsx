@@ -1,5 +1,6 @@
 import { CheckCircle2, AlertTriangle, Clock, BookOpen, Users, Building2, ChevronRight, Zap, RefreshCw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import { COURSE_COLORS } from '../data/mockData';
 import { useState, ReactNode } from 'react';
 
@@ -13,6 +14,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
     darkMode, publishedAt, setSelectedCourse, isCalculating, calculationTime,
     scheduledCourses, scheduleStats,
   } = useApp();
+  const { t } = useLocale();
   const [expanded, setExpanded] = useState<string | null>('stats');
 
   // Use real stats from algorithm if available, otherwise defaults
@@ -28,11 +30,11 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
 
   const totalStudents = scheduledCourses.reduce((sum, c) => sum + c.studentsEnrolled, 0);
 
-  const surface = darkMode ? '#1e293b' : '#f8fafc';
-  const border = darkMode ? '#334155' : '#e2e8f0';
-  const muted = darkMode ? '#64748b' : '#94a3b8';
-  const text = darkMode ? '#f1f5f9' : '#0f172a';
-  const subText = darkMode ? '#94a3b8' : '#64748b';
+  const surface = darkMode ? '#1e293b' : '#f5f5f5';
+  const border = darkMode ? '#334155' : '#d1d5db';
+  const muted = darkMode ? '#64748b' : '#475569';
+  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
+  const subText = darkMode ? '#94a3b8' : '#475569';
 
   function toggle(key: string) {
     setExpanded(prev => prev === key ? null : key);
@@ -54,19 +56,20 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
         style={{ borderColor: border }}
       >
         <Zap className="w-4 h-4" style={{ color: '#6366f1' }} />
-        <span style={{ fontSize: '12px', fontWeight: 700, color: text, letterSpacing: '-0.01em' }}>
-          Status Panel
+        <span style={{ fontSize: '13px', fontWeight: 700, color: text, letterSpacing: '-0.01em' }}>
+          {t.status.title}
         </span>
         <span
-          className="ml-auto px-2 py-0.5 rounded-full text-[10px] font-semibold"
+          className="ml-auto px-2 py-0.5 rounded-full font-semibold"
           style={{
+            fontSize: '11px',
             backgroundColor: currentConflicts > 0
               ? darkMode ? '#450a0a' : '#fee2e2'
               : darkMode ? '#022c22' : '#dcfce7',
             color: currentConflicts > 0 ? '#ef4444' : '#16a34a',
           }}
         >
-          {currentConflicts > 0 ? `${currentConflicts} issue${currentConflicts > 1 ? 's' : ''}` : 'Clear'}
+          {currentConflicts > 0 ? `${currentConflicts} ${t.status.issues}` : t.status.clear}
         </span>
       </div>
 
@@ -75,8 +78,8 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
         className="mx-3 mt-3 mb-2 p-3 rounded-xl"
         style={{ backgroundColor: surface }}
       >
-        <p style={{ fontSize: '10px', fontWeight: 500, color: muted, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
-          Algorithm Result
+        <p style={{ fontSize: '12px', fontWeight: 500, color: muted, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+          {t.status.algorithmResult}
         </p>
         <div className="flex items-center gap-2 mb-2.5">
           <div
@@ -92,23 +95,23 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
           <div>
             <p style={{ fontSize: '18px', fontWeight: 700, color: text, lineHeight: 1 }}>
               {isCalculating ? (
-                <span style={{ fontSize: '14px', color: '#3b82f6' }}>Calculating...</span>
+                <span style={{ fontSize: '14px', color: '#3b82f6' }}>{t.status.calculating}</span>
               ) : (
                 `${execTime}s`
               )}
             </p>
-            <p style={{ fontSize: '10px', color: muted }}>Execution time</p>
+            <p style={{ fontSize: '12px', color: muted }}>{t.status.executionTime}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <MetricChip
-            label="Placed"
+            label={t.status.placed}
             value={`${currentPlaced}/${totalTasks}`}
             color="#22c55e"
             darkMode={darkMode}
           />
           <MetricChip
-            label="Conflicts"
+            label={t.status.conflicts}
             value={String(currentConflicts)}
             color={currentConflicts > 0 ? '#ef4444' : '#22c55e'}
             darkMode={darkMode}
@@ -120,7 +123,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
       {currentWarnings.length > 0 && (
         <div className="mx-3 mb-2">
           <SectionHeader
-            title="Warnings"
+            title={t.status.warnings}
             count={currentWarnings.length}
             open={expanded === 'warnings'}
             onClick={() => toggle('warnings')}
@@ -174,7 +177,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
       {/* Schedule stats */}
       <div className="mx-3 mb-2">
         <SectionHeader
-          title="Schedule Stats"
+          title={t.status.scheduleStats}
           open={expanded === 'stats'}
           onClick={() => toggle('stats')}
           darkMode={darkMode}
@@ -184,19 +187,19 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
           <div className="mt-1.5 space-y-1.5">
             <StatRow
               icon={<BookOpen className="w-3.5 h-3.5" />}
-              label="Total Sessions"
+              label={t.status.totalSessions}
               value={`${currentPlaced}`}
               darkMode={darkMode}
             />
             <StatRow
               icon={<Users className="w-3.5 h-3.5" />}
-              label="Student Sessions"
+              label={t.status.studentSessions}
               value={totalStudents.toLocaleString()}
               darkMode={darkMode}
             />
             <StatRow
               icon={<Building2 className="w-3.5 h-3.5" />}
-              label="Rooms Used"
+              label={t.status.roomsUsed}
               value={`${roomsUsed}/${totalRooms}`}
               darkMode={darkMode}
             />
@@ -207,7 +210,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
       {/* Lecturer hours */}
       <div className="mx-3 mb-2">
         <SectionHeader
-          title="Lecturer Hours"
+          title={t.status.lecturerHours}
           open={expanded === 'lecturers'}
           onClick={() => toggle('lecturers')}
           darkMode={darkMode}
@@ -257,7 +260,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
           >
             <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
             <div>
-              <p style={{ fontSize: '10px', fontWeight: 600, color: '#16a34a' }}>Published</p>
+              <p style={{ fontSize: '10px', fontWeight: 600, color: '#16a34a' }}>{t.published}</p>
               <p style={{ fontSize: '9px', color: darkMode ? '#4ade80' : '#15803d' }}>{publishedAt}</p>
             </div>
           </div>
@@ -276,19 +279,19 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
             {currentConflicts > 0 ? (
               <>
                 <AlertTriangle className="w-3.5 h-3.5" />
-                Resolve conflicts first
+                {t.status.resolveFirst}
               </>
             ) : (
               <>
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                Publish Programme
+                {t.status.publishProgramme}
               </>
             )}
           </button>
         )}
         {currentConflicts > 0 && (
           <p style={{ fontSize: '9px', color: muted, textAlign: 'center', marginTop: 6 }}>
-            Fix {currentConflicts} conflict{currentConflicts > 1 ? 's' : ''} to enable publishing
+            {t.status.fixConflicts.replace('{n}', String(currentConflicts))}
           </p>
         )}
       </div>

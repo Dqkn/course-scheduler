@@ -56,10 +56,10 @@ export const LECTURERS: Lecturer[] = [
   { id: 'l4', name: 'Dr. Ahmed Hassan', title: 'Associate Professor', department: 'Information Technology', email: 'a.hassan@university.edu' },
 ];
 
-export const DEPARTMENTS = ['Computer Science', 'Software Engineering', 'Information Technology'];
+export const DEPARTMENTS = ['Bilgisayar Mühendisliği', 'Yazılım Mühendisliği', 'Bilgi Teknolojileri'];
 export const CLASS_LEVELS = [
-  '1st Year CS', '2nd Year CS', '3rd Year CS', '4th Year CS',
-  '2nd Year IT', '3rd Year IT',
-  '3rd Year SE', '4th Year SE',
+  '1. Sınıf BİL', '2. Sınıf BİL', '3. Sınıf BİL', '4. Sınıf BİL',
+  '2. Sınıf BT', '3. Sınıf BT',
+  '3. Sınıf YM', '4. Sınıf YM',
 ];
 

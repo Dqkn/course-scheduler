@@ -60,9 +60,28 @@ const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
+    // 1. localStorage saved preference
     const stored = localStorage.getItem('optisched-dark');
-    return stored === 'true';
+    if (stored !== null) return stored === 'true';
+    // 2. System OS preference
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false; // default: light
   });
+
+  // Listen for system theme changes (when no user override)
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e: MediaQueryListEvent) => {
+      // Only follow system if user hasn't explicitly set a preference
+      const stored = localStorage.getItem('optisched-dark');
+      if (stored === null) setDarkMode(e.matches);
+    };
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   const [currentUser, setCurrentUser] = useState<Account | null>(() => {
     const stored = localStorage.getItem('optisched-user');
