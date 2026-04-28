@@ -1,5 +1,6 @@
 import { X, Search, Plus, Minus, ChevronDown } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import { useState } from 'react';
 import { ALGORITHM_COURSES } from '../data/algorithmData';
 
@@ -20,6 +21,7 @@ export function CourseManagementModal() {
     runAlgorithm,
     currentUser
   } = useApp();
+  const { t } = useLocale();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedClass, setSelectedClass] = useState<string>(''); // 1, 2, 3, 4
@@ -72,10 +74,10 @@ export function CourseManagementModal() {
         >
           <div>
             <h2 className="text-lg font-bold" style={{ color: darkMode ? '#f1f5f9' : '#0f172a' }}>
-              Manage Course Sections (Şubeler)
+              {t.courseManage.title}
             </h2>
             <p className="text-xs mt-0.5" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
-              Add or remove parallel sections for courses. Set to '0' to close the course entirely. You must hit "Run Algorithm" again to apply changes.
+              {t.courseManage.description}
             </p>
           </div>
           <button
@@ -103,7 +105,7 @@ export function CourseManagementModal() {
             />
             <input
               type="text"
-              placeholder="Search code, name..."
+              placeholder={t.courseManage.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2 rounded-xl border text-sm transition-all focus:ring-2 focus:ring-opacity-50 outline-none"
@@ -155,7 +157,7 @@ export function CourseManagementModal() {
         <div className="flex-1 overflow-y-auto p-2">
           {displayedCourses.length === 0 ? (
             <div className="text-center py-10" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
-              <p className="text-sm font-medium">No courses found</p>
+              <p className="text-sm font-medium">{t.courseManage.noCourses}</p>
             </div>
           ) : (
             <div className="grid gap-1">
@@ -227,16 +229,16 @@ export function CourseManagementModal() {
                     <p className="text-[11px] truncate flex items-center gap-2" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
                       <span>👤 {course.lecturer === 'anonim' ? 'Havuz/Atanmamış' : course.lecturer}</span>
                       <span>•</span>
-                      <span>⏳ {course.hour} Hours/Wk</span>
+                      <span>⏳ {course.hour} {t.courseManage.hoursPerWeek}</span>
                       <span>•</span>
-                      <span>📚 Semester {course.semester}</span>
+                      <span>📚 {course.semester}. {t.courseManage.semester}</span>
                     </p>
                   </div>
                   
                   {/* Section Controls */}
                   <div className="flex flex-col items-center gap-1 shrink-0 px-2">
                     <span className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
-                      Sections
+                      {t.courseManage.sections}
                     </span>
                     <div className="flex items-center gap-3 bg-black/5 dark:bg-white/5 rounded-full p-1" style={{ border: `1px solid ${darkMode ? '#334155' : '#e2e8f0'}` }}>
                       <button
@@ -273,7 +275,7 @@ export function CourseManagementModal() {
           }}
         >
           <p className="text-xs" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
-            Total active courses: {algorithmCourses.filter(c => c.section > 0).length}
+            {t.courseManage.totalActive} {algorithmCourses.filter(c => c.section > 0).length}
           </p>
           <div className="flex items-center gap-3">
             <button
@@ -281,7 +283,7 @@ export function CourseManagementModal() {
               className="px-4 py-2 rounded-lg text-sm font-semibold transition-colors hover:bg-black/5 dark:hover:bg-white/5"
               style={{ color: darkMode ? '#e2e8f0' : '#475569' }}
             >
-              Close
+              {t.close}
             </button>
             <button
               onClick={() => {
@@ -291,7 +293,7 @@ export function CourseManagementModal() {
               className="px-4 py-2 rounded-lg text-sm font-semibold text-white shadow-md transition-all hover:scale-105 active:scale-95"
               style={{ background: 'linear-gradient(135deg, #7c3aed, #4f46e5)' }}
             >
-              Apply & Run Algorithm
+              {t.courseManage.applyAndRun}
             </button>
           </div>
         </div>

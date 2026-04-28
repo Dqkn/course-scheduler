@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { DbCourse } from '../types/courseTypes';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import '../../styles/CourseDataTable.css';
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -49,6 +50,7 @@ export function CourseDataTable({
   onRefresh,
 }: CourseDataTableProps) {
   const { darkMode } = useApp();
+  const { t } = useLocale();
 
   // ── Local state ──
   const [sortField, setSortField] = useState<SortField>('code');
@@ -119,11 +121,11 @@ export function CourseDataTable({
 
   // ── Colors ──
   const bg = darkMode ? '#0f172a' : '#ffffff';
-  const headerBg = darkMode ? '#1e293b' : '#f8fafc';
-  const textPrimary = darkMode ? '#f1f5f9' : '#0f172a';
-  const textSecondary = darkMode ? '#94a3b8' : '#64748b';
-  const hoverBg = darkMode ? '#1e293b' : '#f8fafc';
-  const semesterBg = darkMode ? '#1e293b' : '#f1f5f9';
+  const headerBg = darkMode ? '#1e293b' : '#f5f5f5';
+  const textPrimary = darkMode ? '#f1f5f9' : '#1a1a2e';
+  const textSecondary = darkMode ? '#94a3b8' : '#475569';
+  const hoverBg = darkMode ? '#1e293b' : '#f5f5f5';
+  const semesterBg = darkMode ? '#1e293b' : '#f0f0f0';
 
   /* ──────────────────────────────────────────────────────────────────────── */
   /*  Render                                                                 */
@@ -135,12 +137,12 @@ export function CourseDataTable({
       <div className="cdt-header" style={{ background: headerBg }}>
         <div className="cdt-header-left">
           <span className="cdt-header-title" style={{ color: textPrimary }}>
-            Course Catalog
+            {t.courseTable.title}
           </span>
           <span className="cdt-header-subtitle" style={{ color: textSecondary }}>
             {isLoading
-              ? 'Loading courses…'
-              : `${sorted.length} of ${courses.length} courses`}
+              ? t.courseTable.loading
+              : `${sorted.length} / ${courses.length}`}
           </span>
         </div>
         <div className="cdt-header-actions">
@@ -157,7 +159,7 @@ export function CourseDataTable({
               }}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-              Refresh
+              {t.courseTable.refresh}
             </button>
           )}
         </div>
@@ -180,7 +182,7 @@ export function CourseDataTable({
               onClick={onRefresh}
               className="ml-auto text-xs font-semibold underline hover:no-underline"
             >
-              Retry
+              {t.courseTable.retry}
             </button>
           )}
         </div>
@@ -193,7 +195,7 @@ export function CourseDataTable({
             <Search className="cdt-filter-search-icon w-3.5 h-3.5" style={{ color: textSecondary }} />
             <input
               type="text"
-              placeholder="Search by code or name…"
+              placeholder={t.courseTable.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="cdt-filter-search"
@@ -214,7 +216,7 @@ export function CourseDataTable({
               borderColor: darkMode ? '#334155' : '#e2e8f0',
             }}
           >
-            <option value="">All Departments</option>
+            <option value="">{t.courseTable.allDepartments}</option>
             {uniqueDepts.map((d) => (
               <option key={d} value={d}>
                 {d}
@@ -276,10 +278,10 @@ export function CourseDataTable({
             <BookOpen className="w-6 h-6" style={{ color: textSecondary }} />
           </div>
           <span className="cdt-empty-title" style={{ color: textPrimary }}>
-            No courses found
+            {t.courseTable.noCourses}
           </span>
           <span className="cdt-empty-desc" style={{ color: textSecondary }}>
-            There are no courses in the catalog yet. They will appear here once data is loaded from the database.
+            {t.courseTable.noCoursesDesc}
           </span>
         </div>
       )}
@@ -294,10 +296,10 @@ export function CourseDataTable({
             <Search className="w-6 h-6" style={{ color: textSecondary }} />
           </div>
           <span className="cdt-empty-title" style={{ color: textPrimary }}>
-            No matching courses
+            {t.courseTable.noMatching}
           </span>
           <span className="cdt-empty-desc" style={{ color: textSecondary }}>
-            Try adjusting your search or filter criteria.
+            {t.courseTable.noMatchingDesc}
           </span>
         </div>
       )}
@@ -310,7 +312,7 @@ export function CourseDataTable({
               <tr style={{ background: headerBg }}>
                 <th style={{ color: textSecondary }} onClick={() => handleSort('dept_id')}>
                   <div className="cdt-th-content">
-                    Dept
+                    {t.courseTable.dept}
                     <span className={`cdt-sort-icon ${sortField === 'dept_id' ? 'active' : ''}`}>
                       <SortIcon field="dept_id" />
                     </span>
@@ -318,7 +320,7 @@ export function CourseDataTable({
                 </th>
                 <th style={{ color: textSecondary }} onClick={() => handleSort('code')}>
                   <div className="cdt-th-content">
-                    Code
+                    {t.courseTable.code}
                     <span className={`cdt-sort-icon ${sortField === 'code' ? 'active' : ''}`}>
                       <SortIcon field="code" />
                     </span>
@@ -326,7 +328,7 @@ export function CourseDataTable({
                 </th>
                 <th style={{ color: textSecondary }} onClick={() => handleSort('name')}>
                   <div className="cdt-th-content">
-                    Course Name
+                    {t.courseTable.courseName}
                     <span className={`cdt-sort-icon ${sortField === 'name' ? 'active' : ''}`}>
                       <SortIcon field="name" />
                     </span>
@@ -334,7 +336,7 @@ export function CourseDataTable({
                 </th>
                 <th style={{ color: textSecondary }} onClick={() => handleSort('t_hour')}>
                   <div className="cdt-th-content">
-                    Theory
+                    {t.courseTable.theory}
                     <span className={`cdt-sort-icon ${sortField === 't_hour' ? 'active' : ''}`}>
                       <SortIcon field="t_hour" />
                     </span>
@@ -342,7 +344,7 @@ export function CourseDataTable({
                 </th>
                 <th style={{ color: textSecondary }} onClick={() => handleSort('l_hour')}>
                   <div className="cdt-th-content">
-                    Lab
+                    {t.courseTable.lab}
                     <span className={`cdt-sort-icon ${sortField === 'l_hour' ? 'active' : ''}`}>
                       <SortIcon field="l_hour" />
                     </span>
@@ -350,14 +352,14 @@ export function CourseDataTable({
                 </th>
                 <th style={{ color: textSecondary }} onClick={() => handleSort('program_semester')}>
                   <div className="cdt-th-content">
-                    Sem
+                    {t.courseTable.sem}
                     <span className={`cdt-sort-icon ${sortField === 'program_semester' ? 'active' : ''}`}>
                       <SortIcon field="program_semester" />
                     </span>
                   </div>
                 </th>
                 <th style={{ color: textSecondary }}>
-                  <div className="cdt-th-content">Status</div>
+                  <div className="cdt-th-content">{t.courseTable.statusLabel}</div>
                 </th>
               </tr>
             </thead>
@@ -419,7 +421,7 @@ export function CourseDataTable({
                     <div className="cdt-hours" style={{ color: textPrimary }}>
                       <span className="cdt-hours-value">{course.t_hour}</span>
                       <span className="cdt-hours-label" style={{ color: textSecondary }}>
-                        hr
+                        {t.courseTable.hr}
                       </span>
                     </div>
                   </td>
@@ -429,7 +431,7 @@ export function CourseDataTable({
                     <div className="cdt-hours" style={{ color: textPrimary }}>
                       <span className="cdt-hours-value">{course.l_hour}</span>
                       <span className="cdt-hours-label" style={{ color: textSecondary }}>
-                        hr
+                        {t.courseTable.hr}
                       </span>
                     </div>
                   </td>
@@ -453,18 +455,18 @@ export function CourseDataTable({
                       {course.is_online ? (
                         <span className="cdt-badge cdt-badge-online">
                           <Globe className="w-3 h-3" />
-                          Online
+                          {t.courseTable.online}
                         </span>
                       ) : (
                         <span className="cdt-badge cdt-badge-offline" style={{ color: textSecondary }}>
                           <WifiOff className="w-3 h-3" />
-                          In-class
+                          {t.courseTable.inClass}
                         </span>
                       )}
                       {course.is_service_course && (
                         <span className="cdt-badge cdt-badge-service">
                           <FlaskConical className="w-3 h-3" />
-                          Service
+                          {t.courseTable.service}
                         </span>
                       )}
                     </div>
@@ -480,10 +482,10 @@ export function CourseDataTable({
       {!isLoading && sorted.length > 0 && (
         <div className="cdt-footer" style={{ color: textSecondary }}>
           <span>
-            Showing {sorted.length} of {courses.length} courses
+            {sorted.length} / {courses.length}
           </span>
           <span>
-            {uniqueDepts.length} department{uniqueDepts.length !== 1 ? 's' : ''}
+            {uniqueDepts.length} {t.courseTable.departments}
           </span>
         </div>
       )}

@@ -1,5 +1,6 @@
 import { BookOpen } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import { useCourseData } from '../hooks/useCourseData';
 import { CourseDataTable } from '../components/CourseDataTable';
 import { LoginScreen } from '../components/LoginScreen';
@@ -17,6 +18,7 @@ import { useMemo } from 'react';
  */
 export function CourseCatalog() {
   const { darkMode, currentUser } = useApp();
+  const { t } = useLocale();
   const { courses, isLoading, error, refetch } = useCourseData();
 
   const filteredCourses = useMemo(() => {
@@ -79,10 +81,10 @@ export function CourseCatalog() {
                 letterSpacing: '-0.02em',
               }}
             >
-              Course Catalog
+              {t.courseTable.title}
             </h1>
             <p style={{ fontSize: '11px', color: darkMode ? '#64748b' : '#94a3b8' }}>
-              University course database · Welcome {currentUser.name}
+              {t.courseTable.welcomePrefix} {currentUser.name}
             </p>
           </div>
         </div>

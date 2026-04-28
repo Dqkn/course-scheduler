@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, SlidersHorizontal, ChevronDown, ChevronUp, X } from 'lucide-react';
   import { useApp } from '../context/AppContext';
+  import { useLocale } from '../i18n';
 
 interface DynamicFiltersProps {
   showSearch?: boolean;
@@ -9,6 +10,7 @@ interface DynamicFiltersProps {
 
 export function DynamicFilters({ showSearch = true, compact = false }: DynamicFiltersProps) {
   const { darkMode, filters, setFilter, resetFilters, scheduledCourses, currentUser } = useApp();
+  const { t } = useLocale();
   const [isExpanded, setIsExpanded] = useState(false);
   
   const isSecretary = currentUser?.role === 'department_secretary';
@@ -40,9 +42,10 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
   ).sort();
 
   const selectStyle = {
-    backgroundColor: darkMode ? '#1e293b' : '#f8fafc',
-    color: darkMode ? '#e2e8f0' : '#0f172a',
-    borderColor: darkMode ? '#334155' : '#e2e8f0',
+    backgroundColor: darkMode ? '#1e293b' : '#f5f5f5',
+    color: darkMode ? '#e2e8f0' : '#1a1a2e',
+    borderColor: darkMode ? '#334155' : '#d1d5db',
+    fontSize: '13px',
   };
 
   const inputStyle = {
@@ -55,15 +58,15 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
       className="flex flex-col gap-2.5 px-3 sm:px-4 py-3 sm:py-2.5 border-b"
       style={{
         backgroundColor: darkMode ? '#0f172a' : '#ffffff',
-        borderColor: darkMode ? '#1e293b' : '#e2e8f0',
+        borderColor: darkMode ? '#1e293b' : '#d1d5db',
       }}
     >
       <div className="flex flex-wrap items-center gap-2.5 w-full">
-        <div className="flex items-center gap-1.5 mr-auto lg:mr-1" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
+        <div className="flex items-center gap-1.5 mr-auto lg:mr-1" style={{ color: darkMode ? '#64748b' : '#475569' }}>
           <SlidersHorizontal className="w-3.5 h-3.5" />
           {!compact && (
-            <span className="text-xs font-medium" style={{ color: darkMode ? '#64748b' : '#94a3b8' }}>
-              Filters
+            <span className="font-medium" style={{ fontSize: '13px', color: darkMode ? '#64748b' : '#475569' }}>
+              {t.filters.label}
             </span>
           )}
         </div>
@@ -73,7 +76,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
           className="lg:hidden flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors border"
           style={{
             ...selectStyle,
-            borderColor: darkMode ? '#334155' : '#e2e8f0',
+            borderColor: darkMode ? '#334155' : '#d1d5db',
           }}
         >
           {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -85,15 +88,15 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         <div className="relative w-full sm:flex-1 sm:min-w-36 sm:max-w-[240px]">
           <Search
             className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5"
-            style={{ color: darkMode ? '#64748b' : '#94a3b8' }}
+            style={{ color: darkMode ? '#64748b' : '#475569' }}
           />
           <input
             type="text"
-            placeholder="Search course, code…"
+            placeholder={t.filters.searchPlaceholder}
             value={filters.search}
             onChange={e => setFilter('search', e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 rounded-lg border text-xs"
-            style={inputStyle}
+            className="w-full pl-8 pr-3 py-1.5 rounded-lg border"
+            style={{ ...inputStyle, fontSize: '13px' }}
           />
         </div>
       )}
@@ -108,7 +111,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         className={`px-2.5 py-1.5 rounded-lg border text-xs focus:outline-none ${isSecretary ? 'cursor-not-allowed opacity-80' : 'cursor-pointer'}`}
         style={selectStyle}
       >
-        {!isSecretary && <option value="">All Departments</option>}
+        {!isSecretary && <option value="">{t.filters.allDepartments}</option>}
         {isSecretary && secretaryDept ? (
           <option value={secretaryDept}>{secretaryDept}</option>
         ) : (
@@ -125,7 +128,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         className="px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
         style={selectStyle}
       >
-        <option value="">All Lecturers</option>
+        <option value="">{t.filters.allLecturers}</option>
         {lecturers.map(name => (
           <option key={name} value={name}>{name}</option>
         ))}
@@ -138,7 +141,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         className="px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
         style={selectStyle}
       >
-        <option value="">All Classes</option>
+        <option value="">{t.filters.allClasses}</option>
         {classLevels.map(c => (
           <option key={c} value={c}>{c}</option>
         ))}
@@ -155,9 +158,9 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
             className="px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
             style={selectStyle}
           >
-            <option value="">All Blocks</option>
+            <option value="">{t.filters.allBlocks}</option>
             {blocks.map(b => (
-              <option key={b} value={b}>Block {b}</option>
+              <option key={b} value={b}>{t.filters.block} {b}</option>
             ))}
           </select>
 
@@ -168,7 +171,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
               className="px-2.5 py-1.5 rounded-lg border text-xs cursor-pointer"
               style={selectStyle}
             >
-              <option value="">All {filters.block} Classes</option>
+              <option value="">{t.filters.allRoomsIn.replace('{block}', filters.block)}</option>
               {availableRooms.map(r => (
                 <option key={r} value={r}>{r}</option>
               ))}
@@ -187,7 +190,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
           }}
         >
           <X className="w-3 h-3" />
-          Reset
+          {t.reset}
         </button>
       )}
       </div>
@@ -204,10 +207,10 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
           <FilterPill darkMode={darkMode} label={filters.classLevel} onRemove={() => setFilter('classLevel', '')} />
         )}
         {filters.block && !filters.room && (
-          <FilterPill darkMode={darkMode} label={`Block ${filters.block}`} onRemove={() => { setFilter('block', ''); setFilter('room', ''); }} />
+          <FilterPill darkMode={darkMode} label={`${t.filters.block} ${filters.block}`} onRemove={() => { setFilter('block', ''); setFilter('room', ''); }} />
         )}
         {filters.room && (
-          <FilterPill darkMode={darkMode} label={`Room ${filters.room}`} onRemove={() => setFilter('room', '')} />
+          <FilterPill darkMode={darkMode} label={`${t.filters.room} ${filters.room}`} onRemove={() => setFilter('room', '')} />
         )}
       </div>
     </div>

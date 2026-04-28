@@ -1,10 +1,11 @@
 import { useState, ReactNode } from 'react';
 import { Clock, Users, BookOpen, ChevronDown, BarChart2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import { WeeklyGrid } from '../components/WeeklyGrid';
 import { DynamicFilters } from '../components/DynamicFilters';
 import { CourseDetailModal } from '../components/CourseDetailModal';
-import { COURSE_COLORS, DAYS, DAY_LABELS, DayKey, Course } from '../data/mockData';
+import { COURSE_COLORS, DAYS, DayKey, Course } from '../data/mockData';
 import { Navigate } from 'react-router';
 import { LoginScreen } from '../components/LoginScreen';
 
@@ -13,6 +14,7 @@ export function AcademicView() {
     darkMode, selectedCourse, scheduledCourses, scheduleStats,
     currentUser
   } = useApp();
+  const { t } = useLocale();
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
 
   if (!currentUser || currentUser.role !== 'academic') {
@@ -29,15 +31,15 @@ export function AcademicView() {
   }, 0);
   const totalStudents = myCourses.reduce((s, c) => s + c.studentsEnrolled, 0);
 
-  const border = darkMode ? '#1e293b' : '#e2e8f0';
+  const border = darkMode ? '#1e293b' : '#d1d5db';
   const surface = darkMode ? '#0f172a' : '#ffffff';
-  const muted = darkMode ? '#64748b' : '#94a3b8';
-  const text = darkMode ? '#f1f5f9' : '#0f172a';
+  const muted = darkMode ? '#64748b' : '#475569';
+  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
 
   return (
     <div
       className="flex flex-col h-full"
-      style={{ backgroundColor: darkMode ? '#050c1a' : '#f8faff' }}
+      style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
     >
       {/* Top bar */}
       <div
@@ -46,8 +48,8 @@ export function AcademicView() {
       >
         <div className="flex items-center justify-between w-full sm:w-auto">
           <div>
-          <h1 style={{ fontSize: '15px', fontWeight: 700, color: text, letterSpacing: '-0.02em' }}>
-            Öğretim Üyesi Ders Programı
+          <h1 style={{ fontSize: '16px', fontWeight: 700, color: text, letterSpacing: '-0.02em' }}>
+            {t.academic.title}
           </h1>
           <div className="flex items-center gap-2 mt-0.5">
             {/* Lecturer selector */}
@@ -55,8 +57,9 @@ export function AcademicView() {
               <select
                 disabled
                 value={currentLecturer}
-                className="appearance-none pr-5 pl-1 py-0.5 rounded text-[11px] font-medium cursor-not-allowed focus:outline-none"
+                className="appearance-none pr-5 pl-1 py-0.5 rounded font-medium cursor-not-allowed focus:outline-none"
                 style={{
+                  fontSize: '13px',
                   backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
                   color: darkMode ? '#93c5fd' : '#3b82f6',
                   border: `1px solid ${darkMode ? '#334155' : '#e2e8f0'}`,
@@ -80,19 +83,19 @@ export function AcademicView() {
         <div className="hidden sm:flex items-center gap-2">
           <SummaryChip
             icon={<Clock className="w-3 h-3" />}
-            label={`${totalHours}h / week`}
+            label={`${totalHours} ${t.academic.hoursPerWeek}`}
             darkMode={darkMode}
             color="#6366f1"
           />
           <SummaryChip
             icon={<BookOpen className="w-3 h-3" />}
-            label={`${myCourses.length} sessions`}
+            label={`${myCourses.length} ${t.academic.sessions}`}
             darkMode={darkMode}
             color="#0891b2"
           />
           <SummaryChip
             icon={<Users className="w-3 h-3" />}
-            label={`${totalStudents} students`}
+            label={`${totalStudents} ${t.academic.students}`}
             darkMode={darkMode}
             color="#16a34a"
           />
@@ -123,7 +126,7 @@ export function AcademicView() {
         >
           <div className="px-3 py-2.5 border-b" style={{ borderColor: border }}>
             <p style={{ fontSize: '10px', fontWeight: 700, color: muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-              Daily Summary
+              {t.academic.dailySummary}
             </p>
           </div>
           <div className="p-2 space-y-1.5 flex-1">
@@ -146,19 +149,19 @@ export function AcademicView() {
             style={{ borderColor: border }}
           >
             <p style={{ fontSize: '10px', fontWeight: 600, color: muted, marginBottom: 8 }}>
-              Weekly Total
+              {t.academic.weeklyTotal}
             </p>
             <div className="space-y-1.5">
               <div className="flex justify-between">
-                <span style={{ fontSize: '11px', color: muted }}>Teaching hours</span>
+                <span style={{ fontSize: '11px', color: muted }}>{t.academic.teachingHours}</span>
                 <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{totalHours}h</span>
               </div>
               <div className="flex justify-between">
-                <span style={{ fontSize: '11px', color: muted }}>Sessions</span>
+                <span style={{ fontSize: '11px', color: muted }}>{t.academic.sessions}</span>
                 <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{myCourses.length}</span>
               </div>
               <div className="flex justify-between">
-                <span style={{ fontSize: '11px', color: muted }}>Students</span>
+                <span style={{ fontSize: '11px', color: muted }}>{t.academic.students}</span>
                 <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{totalStudents}</span>
               </div>
             </div>
@@ -188,7 +191,7 @@ export function AcademicView() {
               <div className="flex flex-col h-full overflow-y-auto">
                 <div className="px-3 py-2.5 border-b" style={{ borderColor: border }}>
                   <p style={{ fontSize: '10px', fontWeight: 700, color: muted, textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                    Daily Summary
+                    {t.academic.dailySummary}
                   </p>
                 </div>
                 <div className="p-2 space-y-1.5 flex-1">
@@ -211,19 +214,19 @@ export function AcademicView() {
                   style={{ borderColor: border }}
                 >
                   <p style={{ fontSize: '10px', fontWeight: 600, color: muted, marginBottom: 8 }}>
-                    Weekly Total
+                    {t.academic.weeklyTotal}
                   </p>
                   <div className="space-y-1.5">
                     <div className="flex justify-between">
-                      <span style={{ fontSize: '11px', color: muted }}>Teaching hours</span>
+                      <span style={{ fontSize: '11px', color: muted }}>{t.academic.teachingHours}</span>
                       <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{totalHours}h</span>
                     </div>
                     <div className="flex justify-between">
-                      <span style={{ fontSize: '11px', color: muted }}>Sessions</span>
+                      <span style={{ fontSize: '11px', color: muted }}>{t.academic.sessions}</span>
                       <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{myCourses.length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span style={{ fontSize: '11px', color: muted }}>Students</span>
+                      <span style={{ fontSize: '11px', color: muted }}>{t.academic.students}</span>
                       <span style={{ fontSize: '11px', fontWeight: 600, color: text }}>{totalStudents}</span>
                     </div>
                   </div>
@@ -263,6 +266,7 @@ function DaySummaryCard({
 }: {
   day: DayKey; courses: Course[]; darkMode: boolean;
 }) {
+  const { t } = useLocale();
   const text = darkMode ? '#f1f5f9' : '#0f172a';
   const muted = darkMode ? '#64748b' : '#94a3b8';
 
@@ -272,8 +276,8 @@ function DaySummaryCard({
         className="px-3 py-2.5 rounded-lg"
         style={{ backgroundColor: darkMode ? '#0f172a' : '#f8fafc' }}
       >
-        <p style={{ fontSize: '11px', fontWeight: 600, color: muted }}>{DAY_LABELS[day].slice(0, 3)}</p>
-        <p style={{ fontSize: '10px', color: muted, marginTop: 2 }}>Free day</p>
+        <p style={{ fontSize: '11px', fontWeight: 600, color: muted }}>{t.days[day]?.slice(0, 3)}</p>
+        <p style={{ fontSize: '10px', color: muted, marginTop: 2 }}>{t.academic.freeDay}</p>
       </div>
     );
   }
@@ -284,7 +288,7 @@ function DaySummaryCard({
       style={{ backgroundColor: darkMode ? '#1e293b' : '#f8fafc' }}
     >
       <div className="flex items-center justify-between mb-1.5">
-        <p style={{ fontSize: '11px', fontWeight: 700, color: text }}>{DAY_LABELS[day].slice(0, 3)}</p>
+        <p style={{ fontSize: '11px', fontWeight: 700, color: text }}>{t.days[day]?.slice(0, 3)}</p>
         <span
           className="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
           style={{

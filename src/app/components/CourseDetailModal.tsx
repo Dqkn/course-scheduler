@@ -1,10 +1,12 @@
 import { ReactNode } from 'react';
 import { X, MapPin, Users, Clock, BookOpen, AlertTriangle, GraduationCap, User } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import { COURSE_COLORS, DAY_LABELS } from '../data/mockData';
 
 export function CourseDetailModal() {
   const { selectedCourse, setSelectedCourse, darkMode } = useApp();
+  const { t } = useLocale();
   if (!selectedCourse) return null;
 
   const color = COURSE_COLORS[selectedCourse.colorIndex];
@@ -53,7 +55,7 @@ export function CourseDetailModal() {
                 {selectedCourse.hasConflict && (
                   <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400">
                     <AlertTriangle className="w-2.5 h-2.5" />
-                    Conflict
+                    {t.courseDetail.conflict}
                   </span>
                 )}
               </div>
@@ -89,32 +91,32 @@ export function CourseDetailModal() {
         <div className="px-6 py-4 grid grid-cols-2 gap-4">
           <Detail
             icon={<User className="w-4 h-4" />}
-            label="Lecturer"
+            label={t.courseDetail.lecturer}
             value={selectedCourse.lecturer}
             darkMode={darkMode}
           />
           <Detail
             icon={<BookOpen className="w-4 h-4" />}
-            label="Department"
+            label={t.courseDetail.department}
             value={selectedCourse.department}
             darkMode={darkMode}
           />
           <Detail
             icon={<GraduationCap className="w-4 h-4" />}
-            label="Class"
+            label={t.courseDetail.class}
             value={selectedCourse.classLevel}
             darkMode={darkMode}
           />
           <Detail
             icon={<MapPin className="w-4 h-4" />}
-            label="Room"
+            label={t.courseDetail.room}
             value={selectedCourse.room}
             darkMode={darkMode}
           />
           <Detail
             icon={<Clock className="w-4 h-4" />}
-            label="Day & Time"
-            value={`${DAY_LABELS[selectedCourse.day]}, ${selectedCourse.startTime}–${selectedCourse.endTime}`}
+            label={t.courseDetail.dayTime}
+            value={`${t.days[selectedCourse.day] || DAY_LABELS[selectedCourse.day]}, ${selectedCourse.startTime}–${selectedCourse.endTime}`}
             darkMode={darkMode}
           />
         </div>
@@ -128,7 +130,7 @@ export function CourseDetailModal() {
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4" style={{ color: darkMode ? '#64748b' : '#94a3b8' }} />
               <span className="text-xs font-medium" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
-                Enrolment
+                {t.courseDetail.enrolment}
               </span>
             </div>
             <span
@@ -170,7 +172,7 @@ export function CourseDetailModal() {
             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
             <div>
               <p className="text-xs font-semibold text-red-600 dark:text-red-400 mb-0.5">
-                Scheduling Conflict Detected
+                {t.courseDetail.conflictDetected}
               </p>
               <p className="text-[11px] text-red-500 dark:text-red-400/80">
                 {selectedCourse.conflictReason}
@@ -191,14 +193,14 @@ export function CourseDetailModal() {
               color: darkMode ? '#94a3b8' : '#64748b',
             }}
           >
-            Close
+            {t.close}
           </button>
           <button
             className="px-4 py-2 rounded-lg text-xs font-medium text-white transition-colors"
             style={{ backgroundColor: border }}
             onClick={() => setSelectedCourse(null)}
           >
-            Edit Course
+            {t.courseDetail.editCourse}
           </button>
         </div>
       </div>
@@ -221,10 +223,10 @@ function Detail({
     <div>
       <div
         className="flex items-center gap-1.5 mb-0.5"
-        style={{ color: darkMode ? '#64748b' : '#94a3b8' }}
+        style={{ color: darkMode ? '#64748b' : '#475569' }}
       >
         <span className="[&>svg]:w-3 [&>svg]:h-3">{icon}</span>
-        <span style={{ fontSize: '10px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <span style={{ fontSize: '12px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {label}
         </span>
       </div>
@@ -232,7 +234,7 @@ function Detail({
         className="text-xs"
         style={{
           fontWeight: 500,
-          color: darkMode ? '#e2e8f0' : '#1e293b',
+          color: darkMode ? '#e2e8f0' : '#1a1a2e',
           lineHeight: 1.4,
         }}
       >

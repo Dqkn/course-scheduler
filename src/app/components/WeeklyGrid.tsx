@@ -2,6 +2,7 @@ import { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { AlertTriangle, Clock, MapPin, User } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 import { COURSE_COLORS, DAYS, DAY_LABELS, Course, DayKey } from '../data/mockData';
 
 /* ─── Layout Constants ─────────────────────────────────────────────── */
@@ -121,6 +122,7 @@ function useCurrentMinute() {
 
 export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
   const { darkMode, filters, setSelectedCourse, openCourseIds, scheduledCourses, currentUser } = useApp();
+  const { t } = useLocale();
   const [hoveredCourse, setHoveredCourse] = useState<HoveredState | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const currentMinute = useCurrentMinute();
@@ -194,13 +196,13 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
   }, []);
 
   /* ── Shared style tokens ─────────────────────────────────────────── */
-  const bg = darkMode ? '#0b1120' : '#f8fafc';
+  const bg = darkMode ? '#0b1120' : '#fafafa';
   const headerBg = darkMode ? '#0f172a' : '#ffffff';
-  const borderClr = darkMode ? '#1e293b' : '#e2e8f0';
-  const gutterBg = darkMode ? '#0c1425' : '#f1f5f9';
-  const lineHour = darkMode ? 'rgba(51,65,85,0.45)' : 'rgba(203,213,225,0.7)';
-  const lineHalf = darkMode ? 'rgba(51,65,85,0.18)' : 'rgba(203,213,225,0.3)';
-  const zebraEven = darkMode ? 'rgba(15,23,42,0.35)' : 'rgba(241,245,249,0.55)';
+  const borderClr = darkMode ? '#1e293b' : '#d1d5db';
+  const gutterBg = darkMode ? '#0c1425' : '#f5f5f5';
+  const lineHour = darkMode ? 'rgba(51,65,85,0.45)' : 'rgba(180,190,200,0.7)';
+  const lineHalf = darkMode ? 'rgba(51,65,85,0.18)' : 'rgba(180,190,200,0.3)';
+  const zebraEven = darkMode ? 'rgba(15,23,42,0.35)' : 'rgba(240,240,240,0.55)';
 
   return (
     <div
@@ -248,20 +250,20 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
                   fontSize: '13px',
                   fontWeight: 800,
                   letterSpacing: '0.06em',
-                  color: darkMode ? '#e2e8f0' : '#1e293b',
+                  color: darkMode ? '#e2e8f0' : '#1a1a2e',
                 }}
               >
                 {day.toUpperCase()}
               </p>
               <p
                 style={{
-                  fontSize: '10px',
+                  fontSize: '12px',
                   fontWeight: 500,
-                  color: darkMode ? '#475569' : '#94a3b8',
+                  color: darkMode ? '#475569' : '#64748b',
                   marginTop: '1px',
                 }}
               >
-                {DAY_LABELS[day]}
+                {t.days[day] || DAY_LABELS[day]}
               </p>
             </div>
           ))}
@@ -415,6 +417,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
    ═══════════════════════════════════════════════════════════════════════ */
 
 function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode: boolean }) {
+  const { t } = useLocale();
   const color = COURSE_COLORS[hovered.course.colorIndex];
   const accentColor = darkMode ? color.darkBorder : color.lightBorder;
   const capacityPct = Math.round(
@@ -498,7 +501,7 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
         <div className="pt-1.5 mt-0.5 border-t" style={{ borderColor: darkMode ? '#1e293b' : '#f1f5f9' }}>
           <div className="flex items-center justify-between mb-1">
             <span className="text-[10px] font-semibold" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
-              Capacity
+              {t.tooltip.capacity}
             </span>
             <span className="text-[10px] font-bold" style={{ color: darkMode ? '#e2e8f0' : '#334155' }}>
               {hovered.course.studentsEnrolled}/{hovered.course.totalCapacity}
