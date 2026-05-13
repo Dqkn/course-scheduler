@@ -38,6 +38,7 @@ export const tr = {
   // ── Header ──
   header: {
     dashboard: 'Kontrol Paneli',
+    reservations: 'Rezervasyon',
     courses: 'Dersler',
     signOut: 'Çıkış Yap',
     lightMode: 'Açık Temaya Geç',
@@ -170,10 +171,75 @@ export const tr = {
     welcomePrefix: 'Üniversite ders veritabanı · Hoş geldiniz',
   },
 
+  // ── Reservation ──
+  reservation: {
+    title: 'Derslik Rezervasyon Sistemi',
+    subtitle: 'Derslik rezervasyonu yapın veya mevcut rezervasyonlarınızı yönetin.',
+    newReservation: 'Yeni Rezervasyon',
+    newReservationDesc: 'Uygun derslik arayın ve rezervasyon yapın',
+    activeReservations: 'Aktif Rezervasyonlarım',
+    activeReservationsDesc: 'Mevcut rezervasyonlarınızı görüntüleyin',
+    filterTitle: 'Rezervasyon Filtreleri',
+    selectDate: 'Tarih Seçin',
+    selectTime: 'Saat Seçin',
+    roomType: 'Sınıf Tipi',
+    minCapacity: 'Min. Kapasite',
+    searchRooms: 'Uygun Derslikleri Ara',
+    resultsTitle: 'Filtrelerinize Uygun Sınıflar',
+    availableRooms: 'müsait derslik',
+    noRooms: 'Uygun derslik bulunamadı',
+    noRoomsDesc: 'Seçtiğiniz kriterlere uygun müsait derslik bulunamadı.',
+    available: 'Müsait',
+    occupied: 'Dolu',
+    capacityLabel: 'Kapasite',
+    typeLabel: 'Tip',
+    blockLabel: 'Blok',
+    floorLabel: 'Kat',
+    roomLabel: 'Derslik',
+    dateLabel: 'Tarih',
+    timeLabel: 'Saat',
+    person: 'kişi',
+    confirmTitle: 'Rezervasyon Onayı',
+    confirmQuestion: 'Bu rezervasyonu onaylıyor musunuz?',
+    cancel: 'İptal',
+    confirm: 'Onayla',
+    saving: 'Rezervasyonunuz kaydediliyor...',
+    successTitle: 'Başarılı!',
+    successDesc: 'Rezervasyonunuz başarıyla kaydedildi.',
+    conflictTitle: 'Çakışma!',
+    conflictDesc: 'Bu derslik seçilen tarih ve saatte zaten rezerve edilmiş.',
+    ok: 'Tamam',
+    back: 'Geri',
+    activeLabel: 'Aktif',
+    cancelReservation: 'İptal Et',
+    confirmCancel: 'Evet, İptal Et',
+    noActiveReservations: 'Aktif rezervasyonunuz yok',
+    noActiveReservationsDesc: 'Henüz bir rezervasyon yapmadınız.',
+    createdBy: 'Oluşturan',
+    errorNoDate: 'Lütfen bir tarih seçin.',
+    errorNoTime: 'En az bir saat aralığı seçmelisiniz.',
+    errorPastDate: 'Geçmiş bir tarih seçilemez. Lütfen bugün veya sonrası için bir tarih girin.',
+    separateReservations: '{n} ayrı rezervasyon oluşturulacak (her saat dilimi için bir adet)',
+  },
+
   // ── Tooltip ──
   tooltip: {
     capacity: 'Kontenjan',
   },
 } as const;
 
-export type Translations = typeof tr;
+// Recursively convert all readonly string-literal leaf values to `string`
+// so that the EN translation file can use different wording while keeping
+// the same structural shape.
+type DeepStringify<T> =
+  T extends readonly string[]
+    ? string[]
+    : T extends readonly (infer U)[]
+      ? DeepStringify<U>[]
+      : T extends Record<string, unknown>
+        ? { [K in keyof T]: DeepStringify<T[K]> }
+        : T extends string
+          ? string
+          : T;
+
+export type Translations = DeepStringify<typeof tr>;

@@ -6,7 +6,6 @@ import { WeeklyGrid } from '../components/WeeklyGrid';
 import { DynamicFilters } from '../components/DynamicFilters';
 import { CourseDetailModal } from '../components/CourseDetailModal';
 import { COURSE_COLORS, DAYS, DayKey, Course } from '../data/mockData';
-import { Navigate } from 'react-router';
 import { LoginScreen } from '../components/LoginScreen';
 
 export function AcademicView() {

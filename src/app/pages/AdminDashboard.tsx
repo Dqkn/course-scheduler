@@ -1,7 +1,6 @@
 import { CheckCircle2, Download, RefreshCw, BarChart2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
-import { Navigate } from 'react-router';
 import { LoginScreen } from '../components/LoginScreen';
 import { DynamicFilters } from '../components/DynamicFilters';
 import { WeeklyGrid } from '../components/WeeklyGrid';

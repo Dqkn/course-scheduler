@@ -1,4 +1,4 @@
-import { Moon, Sun, Calendar, ChevronDown, Bell, LogOut, BookOpen, User as UserIcon, Globe } from 'lucide-react';
+import { Moon, Sun, Calendar, Bell, LogOut, BookOpen } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
@@ -74,6 +74,27 @@ export function Header() {
             }}
           >
             {t.header.dashboard}
+          </button>
+
+          <div className="w-px h-5 mx-1" style={{ backgroundColor: border }} />
+
+          <button
+            onClick={() => navigate('/reservations')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
+            style={{
+              fontSize: '13px',
+              backgroundColor:
+                location.pathname === '/reservations'
+                  ? darkMode ? '#312e81' : '#e0e7ff'
+                  : 'transparent',
+              color:
+                location.pathname === '/reservations'
+                  ? darkMode ? '#a5b4fc' : '#4338ca'
+                  : textMuted,
+            }}
+          >
+            <Calendar className="w-3.5 h-3.5" />
+            {t.header.reservations}
           </button>
 
           <div className="w-px h-5 mx-1" style={{ backgroundColor: border }} />
@@ -190,6 +211,14 @@ export function Header() {
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     {t.header.dashboard}
+                  </button>
+                  <button
+                    onClick={() => { setUserMenuOpen(false); navigate('/reservations'); }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 text-left font-medium transition-colors hover:opacity-80"
+                    style={{ color: textPrimary, fontSize: '13px' }}
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    {t.header.reservations}
                   </button>
                   <button
                     onClick={() => { setUserMenuOpen(false); navigate('/courses'); }}

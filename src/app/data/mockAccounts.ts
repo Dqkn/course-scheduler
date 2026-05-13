@@ -75,7 +75,7 @@ export const ACADEMIC_ACCOUNTS: Account[] = NAMED_LECTURERS.map(lecturerName => 
     id,
     name: lecturerName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
     password: `${id}123`,
-    role: 'academic',
+    role: 'academic' as const,
   };
 });
 

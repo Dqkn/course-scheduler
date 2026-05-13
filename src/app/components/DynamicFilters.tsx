@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Search, SlidersHorizontal, ChevronDown, ChevronUp, X } from 'lucide-react';
-  import { useApp } from '../context/AppContext';
-  import { useLocale } from '../i18n';
+import { useApp } from '../context/AppContext';
+import { useLocale } from '../i18n';
 
 interface DynamicFiltersProps {
   showSearch?: boolean;
