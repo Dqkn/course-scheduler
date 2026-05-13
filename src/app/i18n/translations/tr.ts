@@ -220,6 +220,21 @@ export const tr = {
     errorNoTime: 'En az bir saat aralığı seçmelisiniz.',
     errorPastDate: 'Geçmiş bir tarih seçilemez. Lütfen bugün veya sonrası için bir tarih girin.',
     separateReservations: '{n} ayrı rezervasyon oluşturulacak (her saat dilimi için bir adet)',
+    // Admin - All Reservations View
+    allReservations: 'Tüm Rezervasyonları Görüntüle',
+    allReservationsDesc: 'Tüm akademisyenlerin yaptığı derslik rezervasyonlarını haftalık görünümde inceleyin.',
+    allReservationsTitle: 'Tüm Derslik Rezervasyonları',
+    allReservationsSubtitle: 'Bu ekranda öğretim elemanları tarafından yapılan tüm derslik rezervasyonlarını haftalık görünümde inceleyebilirsiniz.',
+    prevWeek: 'Önceki Hafta',
+    nextWeek: 'Sonraki Hafta',
+    thisWeek: 'Bu Hafta',
+    noReservationsThisWeek: 'Seçili haftada yapılmış derslik rezervasyonu bulunmamaktadır.',
+    filterLecturer: 'Öğretim Elemanı',
+    filterRoom: 'Derslik',
+    filterRoomType: 'Sınıf Tipi',
+    filterAll: 'Tümü',
+    clearFilters: 'Temizle',
+    createdAtLabel: 'Oluşturulma',
   },
 
   // ── Tooltip ──
@@ -233,11 +248,11 @@ export const tr = {
 // the same structural shape.
 type DeepStringify<T> =
   T extends readonly string[]
-    ? string[]
+    ? readonly string[]
     : T extends readonly (infer U)[]
-      ? DeepStringify<U>[]
+      ? readonly DeepStringify<U>[]
       : T extends Record<string, unknown>
-        ? { [K in keyof T]: DeepStringify<T[K]> }
+        ? { readonly [K in keyof T]: DeepStringify<T[K]> }
         : T extends string
           ? string
           : T;

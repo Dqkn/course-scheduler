@@ -7,6 +7,7 @@ import { ReservationFilters } from '../components/reservation/ReservationFilters
 import { ReservationResults } from '../components/reservation/ReservationResults';
 import { ReservationConfirmModal } from '../components/reservation/ReservationConfirmModal';
 import { ActiveReservations } from '../components/reservation/ActiveReservations';
+import { AllReservationsView } from '../components/reservation/AllReservationsView';
 import type { ReservationView, ReservationFilterState, Room } from '../types/reservationTypes';
 
 export function ClassroomReservation() {
@@ -77,7 +78,11 @@ export function ClassroomReservation() {
 
       {/* View Router */}
       {view === 'home' && (
-        <ReservationHome darkMode={darkMode} onNavigate={handleNavigate} />
+        <ReservationHome
+          darkMode={darkMode}
+          userRole={currentUser.role}
+          onNavigate={handleNavigate}
+        />
       )}
 
       {view === 'filters' && (
@@ -101,6 +106,13 @@ export function ClassroomReservation() {
         <ActiveReservations
           darkMode={darkMode}
           userId={currentUser.id}
+          onBack={() => handleNavigate('home')}
+        />
+      )}
+
+      {view === 'allReservations' && (
+        <AllReservationsView
+          darkMode={darkMode}
           onBack={() => handleNavigate('home')}
         />
       )}

@@ -141,3 +141,51 @@ export function getRoomTypeLabel(type: string, locale: 'tr' | 'en'): string {
   };
   return map[type]?.[locale] ?? type;
 }
+
+// ── Week helpers ──
+
+/** Returns the Monday of the week containing the given date */
+export function getMonday(d: Date): Date {
+  const date = new Date(d);
+  const day = date.getDay();
+  // getDay(): 0=Sun, 1=Mon, ...6=Sat
+  const diff = day === 0 ? -6 : 1 - day;
+  date.setDate(date.getDate() + diff);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
+
+/** Returns Monday-Friday date strings (YYYY-MM-DD) for a given week offset from today */
+export function getWeekDates(weekOffset: number = 0): string[] {
+  const now = new Date();
+  const monday = getMonday(now);
+  monday.setDate(monday.getDate() + weekOffset * 7);
+  const dates: string[] = [];
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(monday);
+    d.setDate(d.getDate() + i);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    dates.push(`${y}-${m}-${day}`);
+  }
+  return dates;
+}
+
+/** Returns a formatted week range string, e.g. "12.05.2026 - 16.05.2026" */
+export function getWeekRangeLabel(weekOffset: number, locale: 'tr' | 'en'): string {
+  const dates = getWeekDates(weekOffset);
+  const mon = dates[0];
+  const fri = dates[4];
+  if (locale === 'tr') {
+    return `${formatDateTr(mon)} - ${formatDateTr(fri)}`;
+  }
+  return `${formatDateEn(mon)} - ${formatDateEn(fri)}`;
+}
+
+/** Returns all reservations that fall within the given week */
+export function getReservationsForWeek(weekOffset: number): Reservation[] {
+  const dates = getWeekDates(weekOffset);
+  const dateSet = new Set(dates);
+  return getReservations().filter(r => dateSet.has(r.date));
+}

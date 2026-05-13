@@ -60,7 +60,7 @@ export interface Reservation {
   roomType: RoomType;
 }
 
-export type ReservationView = 'home' | 'filters' | 'results' | 'active';
+export type ReservationView = 'home' | 'filters' | 'results' | 'active' | 'allReservations';
 
 export interface RoomGrouped {
   block: string;

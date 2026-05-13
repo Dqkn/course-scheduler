@@ -1,13 +1,15 @@
-import { CalendarPlus, ClipboardList } from 'lucide-react';
+import { CalendarPlus, ClipboardList, LayoutGrid } from 'lucide-react';
 import { useLocale } from '../../i18n';
 import type { ReservationView } from '../../types/reservationTypes';
 
 interface Props {
   darkMode: boolean;
+  /** Current user role — used to control admin-only card visibility */
+  userRole: string;
   onNavigate: (view: ReservationView) => void;
 }
 
-export function ReservationHome({ darkMode, onNavigate }: Props) {
+export function ReservationHome({ darkMode, userRole, onNavigate }: Props) {
   const { t } = useLocale();
   const rt = t.reservation;
 
@@ -15,6 +17,9 @@ export function ReservationHome({ darkMode, onNavigate }: Props) {
   const surface = darkMode ? '#0f172a' : '#ffffff';
   const text = darkMode ? '#f1f5f9' : '#1a1a2e';
   const muted = darkMode ? '#94a3b8' : '#475569';
+
+  // Admin roles: dean and department_secretary can see all reservations
+  const isAdmin = userRole === 'dean' || userRole === 'department_secretary';
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
@@ -28,8 +33,8 @@ export function ReservationHome({ darkMode, onNavigate }: Props) {
         {rt.subtitle}
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-xl">
-        {/* New Reservation Card */}
+      <div className={`grid grid-cols-1 ${isAdmin ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-5 w-full ${isAdmin ? 'max-w-3xl' : 'max-w-xl'}`}>
+        {/* ── New Reservation Card ── */}
         <button
           onClick={() => onNavigate('filters')}
           className="group relative flex flex-col items-center gap-4 p-8 rounded-2xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
@@ -60,7 +65,7 @@ export function ReservationHome({ darkMode, onNavigate }: Props) {
           />
         </button>
 
-        {/* Active Reservations Card */}
+        {/* ── Active Reservations Card ── */}
         <button
           onClick={() => onNavigate('active')}
           className="group relative flex flex-col items-center gap-4 p-8 rounded-2xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
@@ -90,6 +95,39 @@ export function ReservationHome({ darkMode, onNavigate }: Props) {
             }}
           />
         </button>
+
+        {/* ── All Reservations Card (Admin Only) ── */}
+        {isAdmin && (
+          <button
+            onClick={() => onNavigate('allReservations')}
+            className="group relative flex flex-col items-center gap-4 p-8 rounded-2xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+            style={{
+              backgroundColor: surface,
+              borderColor: border,
+            }}
+          >
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110"
+              style={{
+                background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+              }}
+            >
+              <LayoutGrid className="w-7 h-7 text-white" />
+            </div>
+            <div className="text-center">
+              <p style={{ fontSize: '16px', fontWeight: 700, color: text }}>{rt.allReservations}</p>
+              <p style={{ fontSize: '12px', color: muted, marginTop: 4 }}>{rt.allReservationsDesc}</p>
+            </div>
+            <div
+              className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+              style={{
+                background: darkMode
+                  ? 'linear-gradient(135deg, rgba(245,158,11,0.08), rgba(217,119,6,0.08))'
+                  : 'linear-gradient(135deg, rgba(245,158,11,0.04), rgba(217,119,6,0.04))',
+              }}
+            />
+          </button>
+        )}
       </div>
     </div>
   );

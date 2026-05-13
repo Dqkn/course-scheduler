@@ -222,6 +222,21 @@ export const en: Translations = {
     errorNoTime: 'You must select at least one time slot.',
     errorPastDate: 'Past dates cannot be selected. Please choose today or a future date.',
     separateReservations: '{n} separate reservations will be created (one per time slot)',
+    // Admin - All Reservations View
+    allReservations: 'View All Reservations',
+    allReservationsDesc: 'View all classroom reservations made by faculty members in weekly view.',
+    allReservationsTitle: 'All Classroom Reservations',
+    allReservationsSubtitle: 'View all classroom reservations made by faculty members in a weekly calendar view.',
+    prevWeek: 'Previous Week',
+    nextWeek: 'Next Week',
+    thisWeek: 'This Week',
+    noReservationsThisWeek: 'No classroom reservations found for the selected week.',
+    filterLecturer: 'Faculty Member',
+    filterRoom: 'Room',
+    filterRoomType: 'Room Type',
+    filterAll: 'All',
+    clearFilters: 'Clear',
+    createdAtLabel: 'Created',
   },
 
   // ── Tooltip ──
