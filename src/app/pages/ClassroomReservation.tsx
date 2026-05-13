@@ -1,6 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { useLocale } from '../i18n';
 import { LoginScreen } from '../components/LoginScreen';
 import { ReservationHome } from '../components/reservation/ReservationHome';
 import { ReservationFilters } from '../components/reservation/ReservationFilters';
@@ -12,7 +11,6 @@ import type { ReservationView, ReservationFilterState, Room } from '../types/res
 
 export function ClassroomReservation() {
   const { darkMode, currentUser } = useApp();
-  const { t } = useLocale();
 
   const [view, setView] = useState<ReservationView>('home');
   const [filters, setFilters] = useState<ReservationFilterState | null>(null);
@@ -22,9 +20,6 @@ export function ClassroomReservation() {
   if (!currentUser) {
     return <LoginScreen portalType="admin" />;
   }
-
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
 
   function handleSearch(f: ReservationFilterState) {
     setFilters(f);
@@ -59,22 +54,6 @@ export function ClassroomReservation() {
       className="flex flex-col h-full"
       style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
     >
-      {/* Sub-header bar */}
-      <div
-        className="flex items-center px-3 sm:px-5 py-2.5 border-b shrink-0"
-        style={{ backgroundColor: surface, borderColor: border }}
-      >
-        <h1
-          style={{
-            fontSize: '16px',
-            fontWeight: 700,
-            color: darkMode ? '#f1f5f9' : '#1a1a2e',
-            letterSpacing: '-0.02em',
-          }}
-        >
-          {t.reservation.title}
-        </h1>
-      </div>
 
       {/* View Router */}
       {view === 'home' && (

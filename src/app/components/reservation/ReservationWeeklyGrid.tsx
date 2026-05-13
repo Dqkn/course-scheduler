@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Clock, MapPin, User, Building2, Calendar as CalIcon } from 'lucide-react';
+import { Clock, User } from 'lucide-react';
 import { useLocale } from '../../i18n';
 import type { Reservation, TimeSlot } from '../../types/reservationTypes';
 import { ALL_TIME_SLOTS } from '../../types/reservationTypes';
@@ -89,10 +89,10 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
         >
           {/* Gutter */}
           <div
-            className="shrink-0 w-[80px] sticky left-0 z-30 border-r flex items-center justify-center py-2.5"
+            className="shrink-0 w-[56px] sticky left-0 z-30 border-r flex items-center justify-center py-1.5"
             style={{ backgroundColor: headerBg, borderColor: borderClr }}
           >
-            <Clock className="w-3.5 h-3.5" style={{ color: darkMode ? '#475569' : '#94a3b8' }} />
+            <Clock className="w-3 h-3" style={{ color: darkMode ? '#475569' : '#94a3b8' }} />
           </div>
 
           {WEEKDAYS.map((day, i) => {
@@ -101,13 +101,13 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
             return (
               <div
                 key={day}
-                className="flex-1 py-2.5 text-center"
+                className="flex-1 py-1.5 text-center"
                 style={{ borderLeft: `1px solid ${borderClr}` }}
               >
-                <p style={{ fontSize: '13px', fontWeight: 800, letterSpacing: '0.06em', color: text }}>
+                <p style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.06em', color: text }}>
                   {dayLabelsMap[day][locale].toUpperCase()}
                 </p>
-                <p style={{ fontSize: '11px', fontWeight: 500, color: muted, marginTop: 1 }}>
+                <p style={{ fontSize: '10px', fontWeight: 500, color: muted, marginTop: 0 }}>
                   {shortDate}
                 </p>
               </div>
@@ -119,7 +119,7 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
         <div className="flex">
           {/* Time gutter */}
           <div
-            className="shrink-0 w-[80px] sticky left-0 z-10 border-r"
+            className="shrink-0 w-[56px] sticky left-0 z-10 border-r"
             style={{ backgroundColor: gutterBg, borderColor: borderClr }}
           >
             {ALL_TIME_SLOTS.map((slot, i) => (
@@ -127,13 +127,13 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
                 key={slot}
                 className="flex items-center justify-center border-b"
                 style={{
-                  height: 100,
+                  height: 72,
                   borderColor: borderClr,
                   backgroundColor: i % 2 === 0 ? 'transparent' : zebraEven,
                 }}
               >
                 <span style={{
-                  fontSize: '11px',
+                  fontSize: '10px',
                   fontWeight: 700,
                   fontVariantNumeric: 'tabular-nums',
                   color: muted,
@@ -158,7 +158,7 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
                       key={slot}
                       className="border-b relative"
                       style={{
-                        height: 100,
+                        height: 72,
                         borderColor: borderClr,
                         backgroundColor: slotIdx % 2 === 0 ? cellBg : zebraEven,
                       }}
@@ -174,7 +174,7 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
                             return (
                               <div
                                 key={r.id}
-                                className="rounded-lg px-2.5 py-1.5 flex flex-col gap-0.5 transition-transform hover:scale-[1.02]"
+                                className="rounded-md px-2 py-1 flex flex-col transition-transform hover:scale-[1.02]"
                                 style={{
                                   backgroundColor: color.bg,
                                   border: `1px solid ${color.border}44`,
@@ -182,30 +182,20 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
                                 }}
                               >
                                 {/* Room Code */}
-                                <span style={{ fontSize: '12px', fontWeight: 800, color: color.text, letterSpacing: '0.04em' }}>
+                                <span style={{ fontSize: '11px', fontWeight: 800, color: color.text, letterSpacing: '0.04em' }}>
                                   {r.roomCode}
                                 </span>
                                 {/* User */}
                                 <div className="flex items-center gap-1">
                                   <User className="w-2.5 h-2.5 shrink-0" style={{ color: muted }} />
-                                  <span style={{ fontSize: '10px', fontWeight: 600, color: text, lineHeight: 1.2 }}>
+                                  <span style={{ fontSize: '9px', fontWeight: 600, color: text, lineHeight: 1.1 }}>
                                     {r.userName}
                                   </span>
                                 </div>
-                                {/* Time */}
-                                <div className="flex items-center gap-1">
-                                  <Clock className="w-2.5 h-2.5 shrink-0" style={{ color: muted }} />
-                                  <span style={{ fontSize: '9px', color: muted }}>{slot}</span>
-                                </div>
-                                {/* Capacity + Type */}
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <span style={{ fontSize: '9px', color: muted }}>
-                                    {rt.capacityLabel}: {r.roomCapacity}
-                                  </span>
-                                  <span style={{ fontSize: '9px', color: muted }}>
-                                    {getRoomTypeLabel(r.roomType, locale)}
-                                  </span>
-                                </div>
+                                {/* Capacity + Type inline */}
+                                <span style={{ fontSize: '8px', color: muted }}>
+                                  {r.roomCapacity} · {getRoomTypeLabel(r.roomType, locale)}
+                                </span>
                               </div>
                             );
                           })}
