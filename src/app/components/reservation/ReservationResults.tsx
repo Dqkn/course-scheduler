@@ -15,11 +15,11 @@ export function ReservationResults({ darkMode, filters, onBack, onSelectRoom }: 
   const { t, locale } = useLocale();
   const rt = t.reservation;
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
-  const pillBg = darkMode ? '#1e293b' : '#f0f0f0';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
+  const pillBg = 'var(--bg-mute)';
 
   const filteredRooms = filterRooms(filters.roomType, filters.minCapacity, filters.date, filters.timeSlots);
   const grouped = groupRoomsByBlockAndFloor(filteredRooms);
@@ -93,8 +93,8 @@ export function ReservationResults({ darkMode, filters, onBack, onSelectRoom }: 
                     style={{
                       fontSize: '13px',
                       fontWeight: 700,
-                      backgroundColor: darkMode ? '#312e81' : '#e0e7ff',
-                      color: darkMode ? '#a5b4fc' : '#4338ca',
+                      backgroundColor: darkMode ? '#312e81' : 'var(--brand-primary-soft)',
+                      color: darkMode ? '#a5b4fc' : 'var(--brand-primary-active)',
                     }}
                   >
                     {group.block} {rt.blockLabel.toUpperCase()}
@@ -144,7 +144,7 @@ function Badge({ label, darkMode }: { label: string; darkMode: boolean }) {
       style={{
         fontSize: '11px',
         fontWeight: 500,
-        backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
+        backgroundColor: 'var(--bg-mute)',
         color: darkMode ? '#cbd5e1' : '#334155',
       }}
     >

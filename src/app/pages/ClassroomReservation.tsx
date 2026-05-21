@@ -52,7 +52,7 @@ export function ClassroomReservation() {
   return (
     <div
       className="flex flex-col h-full"
-      style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
+      style={{ backgroundColor: 'var(--bg-page)' }}
     >
 
       {/* View Router */}
@@ -84,7 +84,7 @@ export function ClassroomReservation() {
       {view === 'active' && (
         <ActiveReservations
           darkMode={darkMode}
-          userId={currentUser.id}
+          userId={String(currentUser.user_id)}
           onBack={() => handleNavigate('home')}
         />
       )}
@@ -102,8 +102,8 @@ export function ClassroomReservation() {
           darkMode={darkMode}
           room={selectedRoom}
           filters={filters}
-          userId={currentUser.id}
-          userName={currentUser.name}
+          userId={String(currentUser.user_id)}
+          userName={currentUser.full_name}
           userRole={currentUser.role}
           onClose={() => setSelectedRoom(null)}
           onReserved={handleReserved}

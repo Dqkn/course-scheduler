@@ -1,38 +1,23 @@
 import type { DbCourse } from '../types/courseTypes';
-import { MOCK_DB_COURSES } from '../data/courseCatalogMockData';
+import { request, DEMO_MODE } from './apiClient';
+import { DEMO_DB_COURSES } from './demoData';
 
 /**
  * ─── Course Service ─────────────────────────────────────────────────────────
  *
- * ⚡ THIS IS THE ONLY FILE YOU NEED TO MODIFY WHEN THE BACKEND IS READY ⚡
+ * Fetches the course catalog from the backend.
  *
- * Currently returns mock data with a simulated network delay.
- * When your API is live, simply replace the function body:
+ * Expected backend endpoint:
+ *   GET /api/courses → DbCourse[]
  *
- *   BEFORE (mock):
- *     return new Promise(resolve => setTimeout(() => resolve(MOCK_DB_COURSES), delay));
- *
- *   AFTER (real):
- *     const res = await fetch('/api/courses');
- *     if (!res.ok) throw new Error(`HTTP ${res.status}`);
- *     return res.json();
- *
- * Nothing else in the codebase needs to change.
+ * The shape must match the `DbCourse` interface in types/courseTypes.ts.
  * ────────────────────────────────────────────────────────────────────────────
  */
-
-/**
- * Fetch the list of courses from the data source.
- *
- * @returns A promise that resolves to an array of `DbCourse` objects.
- */
 export async function fetchCourseData(): Promise<DbCourse[]> {
-  // Simulate realistic network latency (400–800 ms)
-  const delay = 400 + Math.random() * 400;
-
-  return new Promise<DbCourse[]>((resolve) => {
-    setTimeout(() => {
-      resolve(MOCK_DB_COURSES);
-    }, delay);
-  });
+  if (DEMO_MODE) {
+    // Simulate a small network delay so loading skeletons are visible.
+    await new Promise(r => setTimeout(r, 300));
+    return DEMO_DB_COURSES.map(c => ({ ...c }));
+  }
+  return request<DbCourse[]>('/courses');
 }

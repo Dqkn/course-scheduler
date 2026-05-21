@@ -5,7 +5,18 @@ import type {
   TimeSlot,
   RoomGrouped,
 } from '../types/reservationTypes';
-import { MOCK_ROOMS } from '../data/roomReservationMockData';
+import { DEMO_MODE } from '../services/apiClient';
+import { DEMO_ROOMS } from '../services/demoData';
+
+/**
+ * Room reference list. Real data comes from the backend; until then DEMO_MODE
+ * supplies a small sample list so the reservation UI is usable standalone.
+ *
+ * BACKEND TODO: load this from `lookupService.fetchRooms()` (GET /api/rooms),
+ * and replace the localStorage helpers below with `reservationService` calls
+ * (GET/POST/DELETE /api/reservations, GET /api/rooms/availability).
+ */
+const ROOMS: Room[] = DEMO_MODE ? DEMO_ROOMS : [];
 
 const STORAGE_KEY = 'optisched-reservations';
 
@@ -59,7 +70,7 @@ export function filterRooms(
   date: string,
   timeSlots: TimeSlot[],
 ): (Room & { isAvailable: boolean })[] {
-  return MOCK_ROOMS
+  return ROOMS
     .filter(room => {
       if (roomType !== 'all' && room.type !== roomType) return false;
       if (room.capacity < minCapacity) return false;

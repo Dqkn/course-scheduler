@@ -16,11 +16,11 @@ export function ActiveReservations({ darkMode, userId, onBack }: Props) {
   const [reservations, setReservations] = useState<Reservation[]>(() => getUserReservations(userId));
   const [cancelConfirm, setCancelConfirm] = useState<string | null>(null);
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
-  const pillBg = darkMode ? '#1e293b' : '#f0f0f0';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
+  const pillBg = 'var(--bg-mute)';
 
   function handleCancel(id: string) {
     removeReservation(id);
@@ -47,8 +47,8 @@ export function ActiveReservations({ darkMode, userId, onBack }: Props) {
             style={{
               fontSize: '12px',
               fontWeight: 600,
-              backgroundColor: darkMode ? '#172554' : '#dbeafe',
-              color: darkMode ? '#93c5fd' : '#1e40af',
+              backgroundColor: darkMode ? '#172554' : 'var(--brand-primary-soft)',
+              color: darkMode ? '#93c5fd' : 'var(--brand-primary-active)',
             }}
           >
             {reservations.length}

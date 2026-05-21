@@ -13,13 +13,13 @@ export function ReservationHome({ darkMode, userRole, onNavigate }: Props) {
   const { t } = useLocale();
   const rt = t.reservation;
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
 
-  // Admin roles: dean and department_secretary can see all reservations
-  const isAdmin = userRole === 'dean' || userRole === 'department_secretary';
+  // Admin roles: admin, dept_chair (dean) and secretary can see all reservations
+  const isAdmin = userRole === 'admin' || userRole === 'dept_chair' || userRole === 'secretary';
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 py-12">
@@ -46,7 +46,7 @@ export function ReservationHome({ darkMode, userRole, onNavigate }: Props) {
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110"
             style={{
-              background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              background: 'var(--brand-gradient)',
             }}
           >
             <CalendarPlus className="w-7 h-7 text-white" />
@@ -77,7 +77,7 @@ export function ReservationHome({ darkMode, userRole, onNavigate }: Props) {
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110"
             style={{
-              background: 'linear-gradient(135deg, #0891b2, #06b6d4)',
+              background: 'var(--brand-gradient-accent)',
             }}
           >
             <ClipboardList className="w-7 h-7 text-white" />

@@ -13,18 +13,18 @@ export function Header() {
 
   const isLanding = location.pathname === '/';
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await logout();
     setUserMenuOpen(false);
     navigate('/');
   }
 
-  // ── Light-mode friendly colors ──
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const textPrimary = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const textMuted = darkMode ? '#94a3b8' : '#475569';
-  const pillBg = darkMode ? '#1e293b' : '#f0f0f0';
+  // ── Themed via CSS variables (light = Başkent palette, dark = original) ──
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const textPrimary = 'var(--text-primary)';
+  const textMuted = 'var(--text-muted)';
+  const pillBg = 'var(--bg-mute)';
 
   return (
     <header
@@ -36,7 +36,10 @@ export function Header() {
         onClick={() => navigate('/')}
         className="flex items-center gap-2.5 select-none transition-transform hover:scale-105"
       >
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-sm">
+        <div
+          className="w-7 h-7 rounded-lg flex items-center justify-center shadow-sm"
+          style={{ background: 'var(--logo-gradient)' }}
+        >
           <Calendar className="w-4 h-4 text-white" />
         </div>
         <span
@@ -58,7 +61,7 @@ export function Header() {
         <nav className="hidden md:flex items-center gap-2">
           <button
             onClick={() => {
-              if (currentUser.role === 'academic') navigate('/academic');
+              if (currentUser.role === 'instructor') navigate('/academic');
               else navigate('/admin');
             }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all"
@@ -85,11 +88,11 @@ export function Header() {
               fontSize: '13px',
               backgroundColor:
                 location.pathname === '/reservations'
-                  ? darkMode ? '#312e81' : '#e0e7ff'
+                  ? darkMode ? '#312e81' : 'var(--brand-primary-soft)'
                   : 'transparent',
               color:
                 location.pathname === '/reservations'
-                  ? darkMode ? '#a5b4fc' : '#4338ca'
+                  ? darkMode ? '#a5b4fc' : 'var(--brand-primary-active)'
                   : textMuted,
             }}
           >
@@ -106,11 +109,11 @@ export function Header() {
               fontSize: '13px',
               backgroundColor:
                 location.pathname === '/courses'
-                  ? darkMode ? '#1e3a5f' : '#dbeafe'
+                  ? darkMode ? '#1e3a5f' : 'var(--brand-primary-soft)'
                   : 'transparent',
               color:
                 location.pathname === '/courses'
-                  ? darkMode ? '#60a5fa' : '#2563eb'
+                  ? darkMode ? '#60a5fa' : 'var(--brand-primary)'
                   : textMuted,
             }}
           >
@@ -180,10 +183,13 @@ export function Header() {
               }}
             >
               <span className="text-xs font-semibold max-w-[120px] truncate" style={{ color: textPrimary, fontSize: '13px' }}>
-                {currentUser.name}
+                {currentUser.full_name}
               </span>
-              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0 bg-gradient-to-br from-blue-500 to-indigo-600">
-                {currentUser.name.charAt(0).toUpperCase()}
+              <div
+                className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0"
+                style={{ background: 'var(--brand-gradient)' }}
+              >
+                {currentUser.full_name.charAt(0).toUpperCase()}
               </div>
             </button>
             {userMenuOpen && (
@@ -192,7 +198,7 @@ export function Header() {
                 style={{ backgroundColor: surface, borderColor: border }}
               >
                 <div className="px-3 py-2 border-b mb-1" style={{ borderColor: border }}>
-                  <p className="text-xs font-semibold truncate" style={{ color: textPrimary, fontSize: '13px' }}>{currentUser.name}</p>
+                  <p className="text-xs font-semibold truncate" style={{ color: textPrimary, fontSize: '13px' }}>{currentUser.full_name}</p>
                   <p className="truncate uppercase tracking-wider mt-0.5" style={{ fontSize: '11px', color: textMuted }}>
                     {currentUser.role.replace('_', ' ')}
                   </p>
@@ -203,7 +209,7 @@ export function Header() {
                   <button
                     onClick={() => {
                       setUserMenuOpen(false);
-                      if (currentUser.role === 'academic') navigate('/academic');
+                      if (currentUser.role === 'instructor') navigate('/academic');
                       else navigate('/admin');
                     }}
                     className="w-full flex items-center gap-2.5 px-3 py-2 text-left font-medium transition-colors hover:opacity-80"

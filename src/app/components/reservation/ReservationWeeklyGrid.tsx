@@ -49,17 +49,17 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
   }, [reservations, weekDates]);
 
   // ── Style tokens ──
-  const headerBg = darkMode ? '#0f172a' : '#ffffff';
-  const borderClr = darkMode ? '#1e293b' : '#d1d5db';
-  const gutterBg = darkMode ? '#0c1425' : '#f5f5f5';
-  const cellBg = darkMode ? '#0b1120' : '#fafafa';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
+  const headerBg = 'var(--bg-surface)';
+  const borderClr = 'var(--border-light)';
+  const gutterBg = 'var(--bg-mute)';
+  const cellBg = 'var(--bg-soft)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
   const zebraEven = darkMode ? 'rgba(15,23,42,0.35)' : 'rgba(240,240,240,0.55)';
 
   // Card color palette
   const cardColors = [
-    { bg: darkMode ? '#1e1b4b' : '#eef2ff', border: darkMode ? '#4338ca' : '#818cf8', text: darkMode ? '#a5b4fc' : '#4338ca' },
+    { bg: darkMode ? '#1e1b4b' : '#eef2ff', border: darkMode ? '#4338ca' : '#818cf8', text: darkMode ? '#a5b4fc' : 'var(--brand-primary-active)' },
     { bg: darkMode ? '#042f2e' : '#ecfdf5', border: darkMode ? '#0d9488' : '#14b8a6', text: darkMode ? '#5eead4' : '#0d9488' },
     { bg: darkMode ? '#422006' : '#fffbeb', border: darkMode ? '#d97706' : '#f59e0b', text: darkMode ? '#fbbf24' : '#b45309' },
     { bg: darkMode ? '#3b0764' : '#faf5ff', border: darkMode ? '#9333ea' : '#a855f7', text: darkMode ? '#c084fc' : '#7c3aed' },
@@ -92,7 +92,7 @@ export function ReservationWeeklyGrid({ darkMode, reservations, weekDates }: Pro
             className="shrink-0 w-[56px] sticky left-0 z-30 border-r flex items-center justify-center py-1.5"
             style={{ backgroundColor: headerBg, borderColor: borderClr }}
           >
-            <Clock className="w-3 h-3" style={{ color: darkMode ? '#475569' : '#94a3b8' }} />
+            <Clock className="w-3 h-3" style={{ color: 'var(--text-very-faint)' }} />
           </div>
 
           {WEEKDAYS.map((day, i) => {

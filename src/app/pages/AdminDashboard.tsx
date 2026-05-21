@@ -14,7 +14,7 @@ export function AdminDashboard() {
   const { t, locale } = useLocale();
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
 
-  if (!currentUser || currentUser.role === 'academic') {
+  if (!currentUser || currentUser.role === 'instructor') {
     return <LoginScreen portalType="admin" />;
   }
 
@@ -30,14 +30,14 @@ export function AdminDashboard() {
   return (
     <div
       className="flex flex-col h-full"
-      style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
+      style={{ backgroundColor: 'var(--bg-page)' }}
     >
       {/* Top bar */}
       <div
         className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-3 sm:px-5 py-3 sm:py-2.5 border-b shrink-0"
         style={{
-          backgroundColor: darkMode ? '#0f172a' : '#ffffff',
-          borderColor: darkMode ? '#1e293b' : '#d1d5db',
+          backgroundColor: 'var(--bg-surface)',
+          borderColor: 'var(--border-light)',
         }}
       >
         <div className="flex items-center justify-between w-full sm:w-auto">
@@ -46,24 +46,24 @@ export function AdminDashboard() {
               style={{
                 fontSize: '16px',
                 fontWeight: 700,
-                color: darkMode ? '#f1f5f9' : '#1a1a2e',
+                color: 'var(--text-primary)',
                 letterSpacing: '-0.02em',
               }}
             >
               {t.admin.title}
             </h1>
-            <p style={{ fontSize: '13px', color: darkMode ? '#64748b' : '#475569' }}>
-              {selectedTerm === 'spring' ? 'Bahar' : 'Güz'} 2026 · {scheduledCourses.length} {t.admin.sessions}
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+              {selectedTerm === 'spring' ? 'Bahar' : 'Güz'} {new Date().getFullYear()} · {scheduledCourses.length} {t.admin.sessions}
             </p>
           </div>
-          
+
           {/* Mobile Panel Toggle */}
           <button
             onClick={() => setIsMobilePanelOpen(true)}
             className="flex lg:hidden items-center justify-center p-2 rounded-lg font-medium transition-colors"
             style={{
-              backgroundColor: darkMode ? '#1e293b' : '#f0f0f0',
-              color: darkMode ? '#f1f5f9' : '#1a1a2e',
+              backgroundColor: 'var(--bg-mute)',
+              color: 'var(--text-primary)',
             }}
           >
             <BarChart2 className="w-4 h-4" />
@@ -76,8 +76,8 @@ export function AdminDashboard() {
             className="flex-1 sm:flex-none justify-center px-4 py-1.5 rounded-lg font-semibold shadow-sm transition-all hover:scale-105 active:scale-95"
             style={{
               fontSize: '13px',
-              backgroundColor: darkMode ? '#3b82f6' : '#2563eb',
-              color: '#ffffff',
+              backgroundColor: 'var(--brand-primary)',
+              color: 'var(--brand-on-primary)',
             }}
           >
             {t.admin.manageCourses}
@@ -86,8 +86,8 @@ export function AdminDashboard() {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors"
             style={{
               fontSize: '13px',
-              backgroundColor: darkMode ? '#1e293b' : '#f0f0f0',
-              color: darkMode ? '#94a3b8' : '#475569',
+              backgroundColor: 'var(--bg-mute)',
+              color: 'var(--text-muted)',
             }}
           >
             <Download className="w-3.5 h-3.5" />
@@ -100,9 +100,9 @@ export function AdminDashboard() {
             className="px-2 py-1.5 rounded-lg text-xs font-medium focus:outline-none"
             style={{
               fontSize: '13px',
-              backgroundColor: darkMode ? '#1e293b' : '#f0f0f0',
-              color: darkMode ? '#e2e8f0' : '#1a1a2e',
-              border: `1px solid ${darkMode ? '#334155' : '#d1d5db'}`,
+              backgroundColor: 'var(--bg-mute)',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-light)',
             }}
           >
             <option value="spring">Bahar (Çift Dönem)</option>
@@ -114,8 +114,8 @@ export function AdminDashboard() {
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all hover:scale-105 active:scale-95"
             style={{
               fontSize: '13px',
-              background: isCalculating ? (darkMode ? '#1e293b' : '#f0f0f0') : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-              color: isCalculating ? (darkMode ? '#94a3b8' : '#475569') : '#ffffff',
+              background: isCalculating ? 'var(--bg-mute)' : 'var(--brand-gradient)',
+              color: isCalculating ? 'var(--text-muted)' : 'var(--brand-on-primary)',
               opacity: isCalculating ? 0.7 : 1,
               cursor: isCalculating ? 'not-allowed' : 'pointer'
             }}
@@ -163,7 +163,7 @@ export function AdminDashboard() {
               <button
                 onClick={() => setIsMobilePanelOpen(false)}
                 className="absolute top-3 left-[-40px] p-2 rounded-full shadow-lg border border-white/20"
-                style={{ backgroundColor: darkMode ? '#0f172a' : '#ffffff', color: darkMode ? '#f1f5f9' : '#0f172a' }}
+                style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-primary)' }}
               >
                 <X className="w-4 h-4" />
               </button>

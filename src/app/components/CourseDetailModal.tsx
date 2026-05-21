@@ -46,8 +46,8 @@ export function CourseDetailModal() {
                 <span
                   className="px-2 py-0.5 rounded-md text-[10px] font-medium"
                   style={{
-                    backgroundColor: darkMode ? '#0f172a' : '#f1f5f9',
-                    color: darkMode ? '#94a3b8' : '#64748b',
+                    backgroundColor: 'var(--bg-mute)',
+                    color: 'var(--text-faint)',
                   }}
                 >
                   {selectedCourse.type}
@@ -64,7 +64,7 @@ export function CourseDetailModal() {
                 style={{
                   fontSize: '1.05rem',
                   fontWeight: 700,
-                  color: darkMode ? '#f1f5f9' : '#0f172a',
+                  color: 'var(--text-primary)',
                   lineHeight: 1.3,
                 }}
               >
@@ -75,8 +75,8 @@ export function CourseDetailModal() {
               onClick={() => setSelectedCourse(null)}
               className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
               style={{
-                backgroundColor: darkMode ? '#0f172a' : '#f1f5f9',
-                color: darkMode ? '#64748b' : '#94a3b8',
+                backgroundColor: 'var(--bg-mute)',
+                color: 'var(--text-faint)',
               }}
             >
               <X className="w-4 h-4" />
@@ -124,23 +124,23 @@ export function CourseDetailModal() {
         {/* Capacity */}
         <div
           className="mx-6 mb-5 p-4 rounded-xl"
-          style={{ backgroundColor: darkMode ? '#0f172a' : '#f8fafc' }}
+          style={{ backgroundColor: 'var(--bg-soft)' }}
         >
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4" style={{ color: darkMode ? '#64748b' : '#94a3b8' }} />
-              <span className="text-xs font-medium" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
+              <Users className="w-4 h-4" style={{ color: 'var(--text-faint)' }} />
+              <span className="text-xs font-medium" style={{ color: 'var(--text-faint)' }}>
                 {t.courseDetail.enrolment}
               </span>
             </div>
             <span
               className="text-xs font-semibold"
-              style={{ color: darkMode ? '#f1f5f9' : '#0f172a' }}
+              style={{ color: 'var(--text-primary)' }}
             >
               {selectedCourse.studentsEnrolled} / {selectedCourse.totalCapacity}
               <span
                 className="ml-1.5 font-normal"
-                style={{ color: capacityPct >= 90 ? '#ef4444' : darkMode ? '#64748b' : '#94a3b8' }}
+                style={{ color: capacityPct >= 90 ? '#ef4444' : 'var(--text-faint)' }}
               >
                 ({capacityPct}%)
               </span>
@@ -148,7 +148,7 @@ export function CourseDetailModal() {
           </div>
           <div
             className="w-full h-2 rounded-full overflow-hidden"
-            style={{ backgroundColor: darkMode ? '#1e293b' : '#e2e8f0' }}
+            style={{ backgroundColor: 'var(--bg-mute)' }}
           >
             <div
               className="h-full rounded-full transition-all"
@@ -189,8 +189,8 @@ export function CourseDetailModal() {
             onClick={() => setSelectedCourse(null)}
             className="px-4 py-2 rounded-lg text-xs font-medium transition-colors"
             style={{
-              backgroundColor: darkMode ? '#0f172a' : '#f1f5f9',
-              color: darkMode ? '#94a3b8' : '#64748b',
+              backgroundColor: 'var(--bg-mute)',
+              color: 'var(--text-faint)',
             }}
           >
             {t.close}
@@ -223,7 +223,7 @@ function Detail({
     <div>
       <div
         className="flex items-center gap-1.5 mb-0.5"
-        style={{ color: darkMode ? '#64748b' : '#475569' }}
+        style={{ color: 'var(--text-muted)' }}
       >
         <span className="[&>svg]:w-3 [&>svg]:h-3">{icon}</span>
         <span style={{ fontSize: '12px', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -234,7 +234,7 @@ function Detail({
         className="text-xs"
         style={{
           fontWeight: 500,
-          color: darkMode ? '#e2e8f0' : '#1a1a2e',
+          color: 'var(--text-primary)',
           lineHeight: 1.4,
         }}
       >

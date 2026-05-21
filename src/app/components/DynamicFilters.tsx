@@ -13,8 +13,8 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
   const { t } = useLocale();
   const [isExpanded, setIsExpanded] = useState(false);
   
-  const isSecretary = currentUser?.role === 'department_secretary';
-  const secretaryDept = currentUser?.department;
+  const isSecretary = currentUser?.role === 'secretary';
+  const secretaryDept = currentUser?.department_name;
 
   const hasActiveFilters = Object.values(filters).some(v => v !== '');
 
@@ -42,9 +42,9 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
   ).sort();
 
   const selectStyle = {
-    backgroundColor: darkMode ? '#1e293b' : '#f5f5f5',
-    color: darkMode ? '#e2e8f0' : '#1a1a2e',
-    borderColor: darkMode ? '#334155' : '#d1d5db',
+    backgroundColor: 'var(--bg-mute)',
+    color: 'var(--text-primary)',
+    borderColor: 'var(--border-light)',
     fontSize: '13px',
   };
 
@@ -57,15 +57,15 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
     <div
       className="flex flex-col gap-2.5 px-3 sm:px-4 py-3 sm:py-2.5 border-b"
       style={{
-        backgroundColor: darkMode ? '#0f172a' : '#ffffff',
-        borderColor: darkMode ? '#1e293b' : '#d1d5db',
+        backgroundColor: 'var(--bg-surface)',
+        borderColor: 'var(--border-light)',
       }}
     >
       <div className="flex flex-wrap items-center gap-2.5 w-full">
-        <div className="flex items-center gap-1.5 mr-auto lg:mr-1" style={{ color: darkMode ? '#64748b' : '#475569' }}>
+        <div className="flex items-center gap-1.5 mr-auto lg:mr-1" style={{ color: 'var(--text-muted)' }}>
           <SlidersHorizontal className="w-3.5 h-3.5" />
           {!compact && (
-            <span className="font-medium" style={{ fontSize: '13px', color: darkMode ? '#64748b' : '#475569' }}>
+            <span className="font-medium" style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
               {t.filters.label}
             </span>
           )}
@@ -76,7 +76,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
           className="lg:hidden flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors border"
           style={{
             ...selectStyle,
-            borderColor: darkMode ? '#334155' : '#d1d5db',
+            borderColor: 'var(--border-light)',
           }}
         >
           {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
@@ -88,7 +88,7 @@ export function DynamicFilters({ showSearch = true, compact = false }: DynamicFi
         <div className="relative w-full sm:flex-1 sm:min-w-36 sm:max-w-[240px]">
           <Search
             className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5"
-            style={{ color: darkMode ? '#64748b' : '#475569' }}
+            style={{ color: 'var(--text-muted)' }}
           />
           <input
             type="text"
@@ -222,8 +222,8 @@ function FilterPill({ label, onRemove, darkMode }: { label: string; onRemove: ()
     <span
       className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
       style={{
-        backgroundColor: darkMode ? '#1e3a5f' : '#dbeafe',
-        color: darkMode ? '#93c5fd' : '#1e40af',
+        backgroundColor: darkMode ? '#1e3a5f' : 'var(--brand-primary-soft)',
+        color: darkMode ? '#93c5fd' : 'var(--brand-primary-active)',
       }}
     >
       {label}

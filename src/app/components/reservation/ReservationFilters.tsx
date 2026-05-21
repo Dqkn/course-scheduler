@@ -26,11 +26,11 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
   const [minCapacity, setMinCapacity] = useState<number>(0);
   const [error, setError] = useState('');
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
-  const pillBg = darkMode ? '#1e293b' : '#f0f0f0';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
+  const pillBg = 'var(--bg-mute)';
   const today = getTodayString();
 
   function toggleSlot(slot: TimeSlot) {
@@ -96,7 +96,7 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
             style={{ backgroundColor: surface, borderColor: border }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Calendar className="w-4 h-4" style={{ color: '#6366f1' }} />
+              <Calendar className="w-4 h-4" style={{ color: 'var(--brand-primary)' }} />
               <span style={{ fontSize: '12px', fontWeight: 600, color: muted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {rt.selectDate}
               </span>
@@ -122,7 +122,7 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
             style={{ backgroundColor: surface, borderColor: border }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Building2 className="w-4 h-4" style={{ color: '#0891b2' }} />
+              <Building2 className="w-4 h-4" style={{ color: 'var(--brand-accent)' }} />
               <span style={{ fontSize: '12px', fontWeight: 600, color: muted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {rt.roomType}
               </span>
@@ -197,13 +197,13 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
                       fontSize: '11px',
                       fontWeight: isSelected ? 600 : 400,
                       backgroundColor: isSelected
-                        ? darkMode ? '#312e81' : '#e0e7ff'
+                        ? darkMode ? '#312e81' : 'var(--brand-primary-soft)'
                         : pillBg,
                       color: isSelected
-                        ? darkMode ? '#a5b4fc' : '#4338ca'
+                        ? darkMode ? '#a5b4fc' : 'var(--brand-primary-active)'
                         : muted,
                       border: `1px solid ${isSelected
-                        ? darkMode ? '#4338ca' : '#a5b4fc'
+                        ? darkMode ? '#4338ca' : 'var(--brand-primary)'
                         : 'transparent'}`,
                     }}
                   >
@@ -236,7 +236,7 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
           className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
           style={{
             fontSize: '14px',
-            background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+            background: 'var(--brand-gradient)',
             color: '#ffffff',
           }}
         >

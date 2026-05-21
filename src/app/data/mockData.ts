@@ -1,3 +1,13 @@
+/**
+ * ─── Course domain types + UI constants ─────────────────────────────────────
+ * NOTE: Despite the filename, this file no longer holds mock data. All hand-made
+ * records were removed for the backend handoff. What remains are TYPE contracts
+ * (Course, Lecturer, DayKey, CourseType) and pure UI constants (DAYS,
+ * DAY_LABELS, COURSE_COLORS) that the backend never provides. The `Course` shape
+ * here is what POST /api/scheduler/run must return in its `courses[]`.
+ * ────────────────────────────────────────────────────────────────────────────
+ */
+
 export type DayKey = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';
 export type CourseType = 'Lecture' | 'Lab' | 'Seminar' | 'Tutorial';
 
@@ -39,27 +49,23 @@ export const DAY_LABELS: Record<DayKey, string> = {
 };
 
 export const COURSE_COLORS = [
-  { lightBg: '#DBEAFE', lightBorder: '#93C5FD', lightText: '#1E40AF', darkBg: '#172554', darkBorder: '#3B82F6', darkText: '#93C5FD' },   // blue
-  { lightBg: '#EDE9FE', lightBorder: '#C4B5FD', lightText: '#5B21B6', darkBg: '#2E1065', darkBorder: '#7C3AED', darkText: '#C4B5FD' },   // violet
-  { lightBg: '#D1FAE5', lightBorder: '#6EE7B7', lightText: '#065F46', darkBg: '#022C22', darkBorder: '#34D399', darkText: '#6EE7B7' },   // emerald
-  { lightBg: '#FEF3C7', lightBorder: '#FCD34D', lightText: '#78350F', darkBg: '#451A03', darkBorder: '#F59E0B', darkText: '#FCD34D' },   // amber
-  { lightBg: '#FCE7F3', lightBorder: '#F9A8D4', lightText: '#9D174D', darkBg: '#500724', darkBorder: '#EC4899', darkText: '#F9A8D4' },   // pink
-  { lightBg: '#CCFBF1', lightBorder: '#5EEAD4', lightText: '#115E59', darkBg: '#042F2E', darkBorder: '#14B8A6', darkText: '#5EEAD4' },   // teal
-  { lightBg: '#E0E7FF', lightBorder: '#A5B4FC', lightText: '#3730A3', darkBg: '#1E1B4B', darkBorder: '#6366F1', darkText: '#A5B4FC' },   // indigo
-  { lightBg: '#FFE4E6', lightBorder: '#FCA5A5', lightText: '#991B1B', darkBg: '#450A0A', darkBorder: '#F87171', darkText: '#FCA5A5' },   // rose
+  // Light palette retuned for the BUOBS / AdminLTE blue-heavy identity:
+  // distinct AdminLTE state colors (skin-blue, aqua, green, yellow, purple,
+  // navy, orange, maroon) softened to pastels so course cards stay readable.
+  // Dark palette intentionally unchanged so dark mode keeps the OptiSched identity.
+  { lightBg: '#D6E9F4', lightBorder: '#3C8DBC', lightText: '#1F4E68', darkBg: '#172554', darkBorder: '#3B82F6', darkText: '#93C5FD' },   // skin-blue (AdminLTE primary)
+  { lightBg: '#DEF1F6', lightBorder: '#00C0EF', lightText: '#0B5460', darkBg: '#2E1065', darkBorder: '#7C3AED', darkText: '#C4B5FD' },   // aqua / cyan-info
+  { lightBg: '#DCFCE7', lightBorder: '#00A65A', lightText: '#155724', darkBg: '#022C22', darkBorder: '#34D399', darkText: '#6EE7B7' },   // green / success
+  { lightBg: '#FFF8DC', lightBorder: '#F39C12', lightText: '#856404', darkBg: '#451A03', darkBorder: '#F59E0B', darkText: '#FCD34D' },   // yellow / warning
+  { lightBg: '#E7E5F6', lightBorder: '#605CA8', lightText: '#2D2A6B', darkBg: '#500724', darkBorder: '#EC4899', darkText: '#F9A8D4' },   // purple
+  { lightBg: '#DDE5F0', lightBorder: '#001F3F', lightText: '#001F3F', darkBg: '#042F2E', darkBorder: '#14B8A6', darkText: '#5EEAD4' },   // navy
+  { lightBg: '#FCE6CC', lightBorder: '#FF851B', lightText: '#7E3F0B', darkBg: '#1E1B4B', darkBorder: '#6366F1', darkText: '#A5B4FC' },   // orange
+  { lightBg: '#FAD7DC', lightBorder: '#D81B60', lightText: '#66102E', darkBg: '#450A0A', darkBorder: '#F87171', darkText: '#FCA5A5' },   // maroon / pink
 ];
 
-export const LECTURERS: Lecturer[] = [
-  { id: 'l1', name: 'Dr. Sarah Chen', title: 'Associate Professor', department: 'Computer Science', email: 's.chen@university.edu' },
-  { id: 'l2', name: 'Prof. James Wilson', title: 'Professor', department: 'Software Engineering', email: 'j.wilson@university.edu' },
-  { id: 'l3', name: 'Dr. Maria Garcia', title: 'Assistant Professor', department: 'Computer Science', email: 'm.garcia@university.edu' },
-  { id: 'l4', name: 'Dr. Ahmed Hassan', title: 'Associate Professor', department: 'Information Technology', email: 'a.hassan@university.edu' },
-];
-
-export const DEPARTMENTS = ['Bilgisayar Mühendisliği', 'Yazılım Mühendisliği', 'Bilgi Teknolojileri'];
-export const CLASS_LEVELS = [
-  '1. Sınıf BİL', '2. Sınıf BİL', '3. Sınıf BİL', '4. Sınıf BİL',
-  '2. Sınıf BT', '3. Sınıf BT',
-  '3. Sınıf YM', '4. Sınıf YM',
-];
+// NOTE: Hand-made reference lists (LECTURERS, DEPARTMENTS, CLASS_LEVELS) were
+// removed for the backend handoff. Dropdowns derive their options from the
+// loaded schedule (see DynamicFilters / useCourseFilters). When you need the
+// full reference lists independent of the schedule, use lookupService
+// (GET /api/departments, /api/lecturers, /api/class-levels).
 

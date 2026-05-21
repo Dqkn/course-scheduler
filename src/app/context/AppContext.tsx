@@ -3,7 +3,7 @@ import { useTheme } from './ThemeContext';
 import { useAuth } from './AuthContext';
 import { useUI, type Filters } from './UIContext';
 import { useScheduler } from './SchedulerContext';
-import type { Account } from '../data/mockAccounts';
+import type { Account } from '../types/authTypes';
 
 export type { Account, Filters };
 export { AppProvider };

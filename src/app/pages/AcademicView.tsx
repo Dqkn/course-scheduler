@@ -11,16 +11,16 @@ import { LoginScreen } from '../components/LoginScreen';
 export function AcademicView() {
   const {
     darkMode, selectedCourse, scheduledCourses, scheduleStats,
-    currentUser
+    currentUser, selectedTerm
   } = useApp();
   const { t } = useLocale();
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
 
-  if (!currentUser || currentUser.role !== 'academic') {
+  if (!currentUser || currentUser.role !== 'instructor') {
     return <LoginScreen portalType="academic" />;
   }
 
-  const currentLecturer = currentUser.name;
+  const currentLecturer = currentUser.full_name;
 
   const myCourses = scheduledCourses.filter(c => c.lecturer === currentLecturer);
   const totalHours = myCourses.reduce((sum, c) => {
@@ -30,15 +30,15 @@ export function AcademicView() {
   }, 0);
   const totalStudents = myCourses.reduce((s, c) => s + c.studentsEnrolled, 0);
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const muted = darkMode ? '#64748b' : '#475569';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const muted = 'var(--text-muted)';
+  const text = 'var(--text-primary)';
 
   return (
     <div
       className="flex flex-col h-full"
-      style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
+      style={{ backgroundColor: 'var(--bg-page)' }}
     >
       {/* Top bar */}
       <div
@@ -59,20 +59,20 @@ export function AcademicView() {
                 className="appearance-none pr-5 pl-1 py-0.5 rounded font-medium cursor-not-allowed focus:outline-none"
                 style={{
                   fontSize: '13px',
-                  backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
-                  color: darkMode ? '#93c5fd' : '#3b82f6',
-                  border: `1px solid ${darkMode ? '#334155' : '#e2e8f0'}`,
+                  backgroundColor: 'var(--brand-primary-soft)',
+                  color: 'var(--brand-primary)',
+                  border: '1px solid var(--border-light)',
                 }}
               >
                   <option value={currentLecturer}>{currentLecturer}</option>
               </select>
-              <ChevronDown 
+              <ChevronDown
                 className="w-3 h-3 absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none"
-                style={{ color: darkMode ? '#64748b' : '#94a3b8' }}
+                style={{ color: 'var(--text-faint)' }}
               />
             </div>
             <span style={{ fontSize: '11px', color: muted }}>
-              · Bahar 2026
+              · {selectedTerm === 'spring' ? 'Bahar' : 'Güz'} {new Date().getFullYear()}
             </span>
           </div>
         </div>
@@ -84,13 +84,13 @@ export function AcademicView() {
             icon={<Clock className="w-3 h-3" />}
             label={`${totalHours} ${t.academic.hoursPerWeek}`}
             darkMode={darkMode}
-            color="#6366f1"
+            color={darkMode ? '#6366f1' : '#3c8dbc'}
           />
           <SummaryChip
             icon={<BookOpen className="w-3 h-3" />}
             label={`${myCourses.length} ${t.academic.sessions}`}
             darkMode={darkMode}
-            color="#0891b2"
+            color={darkMode ? '#0891b2' : '#00c0ef'}
           />
           <SummaryChip
             icon={<Users className="w-3 h-3" />}
@@ -105,8 +105,8 @@ export function AcademicView() {
           onClick={() => setIsMobilePanelOpen(true)}
           className="flex sm:hidden items-center justify-center p-2 rounded-lg font-medium transition-colors ml-auto mt-2"
           style={{
-            backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
-            color: darkMode ? '#f1f5f9' : '#0f172a',
+            backgroundColor: 'var(--bg-mute)',
+            color: 'var(--text-primary)',
           }}
         >
           <BarChart2 className="w-4 h-4" />
@@ -182,7 +182,7 @@ export function AcademicView() {
               <button
                 onClick={() => setIsMobilePanelOpen(false)}
                 className="absolute top-3 right-[-40px] p-2 rounded-full shadow-lg border border-white/20"
-                style={{ backgroundColor: darkMode ? '#0f172a' : '#ffffff', color: darkMode ? '#f1f5f9' : '#0f172a' }}
+                style={{ backgroundColor: 'var(--bg-surface)', color: 'var(--text-primary)' }}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -250,8 +250,8 @@ function SummaryChip({
     <div
       className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg"
       style={{
-        backgroundColor: darkMode ? '#1e293b' : '#f8fafc',
-        color: darkMode ? '#e2e8f0' : '#1e293b',
+        backgroundColor: darkMode ? '#1e293b' : 'var(--bg-mute)',
+        color: 'var(--text-primary)',
       }}
     >
       <span style={{ color }} className="[&>svg]:w-3 [&>svg]:h-3">{icon}</span>
@@ -266,14 +266,14 @@ function DaySummaryCard({
   day: DayKey; courses: Course[]; darkMode: boolean;
 }) {
   const { t } = useLocale();
-  const text = darkMode ? '#f1f5f9' : '#0f172a';
-  const muted = darkMode ? '#64748b' : '#94a3b8';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-faint)';
 
   if (courses.length === 0) {
     return (
       <div
         className="px-3 py-2.5 rounded-lg"
-        style={{ backgroundColor: darkMode ? '#0f172a' : '#f8fafc' }}
+        style={{ backgroundColor: darkMode ? '#0f172a' : 'var(--bg-mute)' }}
       >
         <p style={{ fontSize: '11px', fontWeight: 600, color: muted }}>{t.days[day]?.slice(0, 3)}</p>
         <p style={{ fontSize: '10px', color: muted, marginTop: 2 }}>{t.academic.freeDay}</p>
@@ -284,15 +284,15 @@ function DaySummaryCard({
   return (
     <div
       className="px-3 py-2.5 rounded-lg"
-      style={{ backgroundColor: darkMode ? '#1e293b' : '#f8fafc' }}
+      style={{ backgroundColor: darkMode ? '#1e293b' : 'var(--bg-mute)' }}
     >
       <div className="flex items-center justify-between mb-1.5">
         <p style={{ fontSize: '11px', fontWeight: 700, color: text }}>{t.days[day]?.slice(0, 3)}</p>
         <span
           className="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
           style={{
-            backgroundColor: darkMode ? '#172554' : '#dbeafe',
-            color: darkMode ? '#93c5fd' : '#1e40af',
+            backgroundColor: darkMode ? '#172554' : 'var(--brand-primary-soft)',
+            color: darkMode ? '#93c5fd' : 'var(--brand-primary-active)',
           }}
         >
           {courses.length}

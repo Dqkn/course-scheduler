@@ -39,6 +39,52 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ─── Başkent BUOBS brand palette (light mode) ──────────────────────────── */
+  /* Light theme is calibrated to the BUOBS student portal (AdminLTE skin-blue).
+     Dark mode keeps the original OptiSched violet/indigo identity (see .dark
+     block below). Components reference these via var(--bg-*) / var(--text-*) /
+     var(--brand-*) so theme switches are pure CSS without JS ternaries. */
+
+  /* Surfaces */
+  --bg-page: #ecf0f5;
+  --bg-surface: #ffffff;
+  --bg-soft: #f9fafc;
+  --bg-mute: #f4f4f4;
+  --bg-pill: #ecf0f5;
+
+  /* Borders */
+  --border-light: #d2d6de;
+  --border-faint: #f4f4f4;
+  --border-strong: #a4abba;
+
+  /* Text */
+  --text-primary: #1f2d3d;
+  --text-body: #333333;
+  --text-muted: #555555;
+  --text-faint: #999999;
+  --text-very-faint: #bbbbbb;
+
+  /* Brand (AdminLTE skin-blue) */
+  --brand-primary: #3c8dbc;
+  --brand-primary-hover: #367fa9;
+  --brand-primary-active: #2a6593;
+  --brand-primary-soft: #d6e9f4;
+  --brand-primary-soft-strong: #b8dce7;
+  --brand-on-primary: #ffffff;
+
+  /* Accent (AdminLTE aqua) — academic portal & info accents */
+  --brand-accent: #00c0ef;
+  --brand-accent-soft: #def1f6;
+
+  /* Gradients */
+  --brand-gradient: linear-gradient(135deg, #3c8dbc, #2a6593);
+  --brand-gradient-accent: linear-gradient(135deg, #00c0ef, #008cba);
+  --logo-gradient: linear-gradient(135deg, #3c8dbc, #367fa9);
+
+  /* Glow / focus ring tints */
+  --brand-glow: rgba(60, 141, 188, 0.3);
+  --brand-glow-accent: rgba(0, 192, 239, 0.3);
 }
 
 .dark {
@@ -76,6 +122,47 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+
+  /* ─── Dark mode brand palette (original OptiSched identity, untouched) ──── */
+  /* Surfaces */
+  --bg-page: #050c1a;
+  --bg-surface: #0f172a;
+  --bg-soft: #0b1120;
+  --bg-mute: #1e293b;
+  --bg-pill: #1e293b;
+
+  /* Borders */
+  --border-light: #1e293b;
+  --border-faint: #1e293b;
+  --border-strong: #334155;
+
+  /* Text */
+  --text-primary: #f1f5f9;
+  --text-body: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --text-very-faint: #475569;
+
+  /* Brand (kept as original violet/indigo) */
+  --brand-primary: #3b82f6;
+  --brand-primary-hover: #2563eb;
+  --brand-primary-active: #1d4ed8;
+  --brand-primary-soft: #1e3a5f;
+  --brand-primary-soft-strong: #172554;
+  --brand-on-primary: #ffffff;
+
+  /* Accent (academic portal — original teal) */
+  --brand-accent: #0d9488;
+  --brand-accent-soft: #042f2e;
+
+  /* Gradients (original violet/indigo) */
+  --brand-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+  --brand-gradient-accent: linear-gradient(135deg, #0891b2, #0d9488);
+  --logo-gradient: linear-gradient(135deg, #8b5cf6, #6366f1);
+
+  /* Glow / focus ring tints (kept as original violet/cyan) */
+  --brand-glow: rgba(99, 102, 241, 0.3);
+  --brand-glow-accent: rgba(8, 145, 178, 0.3);
 }
 
 @theme inline {
