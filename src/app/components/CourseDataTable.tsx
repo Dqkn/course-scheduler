@@ -36,7 +36,7 @@ interface CourseDataTableProps {
 /*  Sorting                                                                   */
 /* ─────────────────────────────────────────────────────────────────────────── */
 
-type SortField = 'code' | 'name' | 'dept_id' | 'program_semester' | 't_hour' | 'l_hour';
+type SortField = 'course_code' | 'course_name' | 'department_name' | 'course_semester' | 't_hour' | 'l_hour';
 type SortDirection = 'asc' | 'desc';
 
 /* ─────────────────────────────────────────────────────────────────────────── */
@@ -53,14 +53,16 @@ export function CourseDataTable({
   const { t } = useLocale();
 
   // ── Local state ──
-  const [sortField, setSortField] = useState<SortField>('code');
+  const [sortField, setSortField] = useState<SortField>('course_code');
   const [sortDir, setSortDir] = useState<SortDirection>('asc');
   const [searchQuery, setSearchQuery] = useState('');
   const [deptFilter, setDeptFilter] = useState('');
 
   // ── Derived values ──
   const uniqueDepts = useMemo(
-    () => Array.from(new Set(courses.map((c) => c.dept_id))).sort(),
+    () => Array.from(
+      new Set(courses.map((c) => c.department_name).filter((d): d is string => !!d))
+    ).sort(),
     [courses]
   );
 
@@ -68,16 +70,16 @@ export function CourseDataTable({
     let result = courses;
 
     if (deptFilter) {
-      result = result.filter((c) => c.dept_id === deptFilter);
+      result = result.filter((c) => c.department_name === deptFilter);
     }
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
         (c) =>
-          c.code.toLowerCase().includes(q) ||
-          c.name.toLowerCase().includes(q) ||
-          c.dept_id.toLowerCase().includes(q)
+          c.course_code.toLowerCase().includes(q) ||
+          c.course_name.toLowerCase().includes(q) ||
+          (c.department_name ?? '').toLowerCase().includes(q)
       );
     }
 
@@ -87,8 +89,8 @@ export function CourseDataTable({
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
       let cmp = 0;
-      const av = a[sortField];
-      const bv = b[sortField];
+      const av = a[sortField] ?? '';
+      const bv = b[sortField] ?? '';
 
       if (typeof av === 'string' && typeof bv === 'string') {
         cmp = av.localeCompare(bv);
@@ -120,12 +122,12 @@ export function CourseDataTable({
   }
 
   // ── Colors ──
-  const bg = darkMode ? '#0f172a' : '#ffffff';
-  const headerBg = darkMode ? '#1e293b' : '#f5f5f5';
-  const textPrimary = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const textSecondary = darkMode ? '#94a3b8' : '#475569';
-  const hoverBg = darkMode ? '#1e293b' : '#f5f5f5';
-  const semesterBg = darkMode ? '#1e293b' : '#f0f0f0';
+  const bg = 'var(--bg-surface)';
+  const headerBg = 'var(--bg-mute)';
+  const textPrimary = 'var(--text-primary)';
+  const textSecondary = 'var(--text-muted)';
+  const hoverBg = 'var(--bg-mute)';
+  const semesterBg = 'var(--bg-mute)';
 
   /* ──────────────────────────────────────────────────────────────────────── */
   /*  Render                                                                 */
@@ -152,7 +154,7 @@ export function CourseDataTable({
               onClick={onRefresh}
               disabled={isLoading}
               style={{
-                background: darkMode ? '#1e293b' : '#f1f5f9',
+                background: 'var(--bg-mute)',
                 color: textSecondary,
                 opacity: isLoading ? 0.6 : 1,
                 cursor: isLoading ? 'not-allowed' : 'pointer',
@@ -202,7 +204,7 @@ export function CourseDataTable({
               style={{
                 background: bg,
                 color: textPrimary,
-                borderColor: darkMode ? '#334155' : '#e2e8f0',
+                borderColor: 'var(--border-light)',
               }}
             />
           </div>
@@ -213,7 +215,7 @@ export function CourseDataTable({
             style={{
               background: bg,
               color: textPrimary,
-              borderColor: darkMode ? '#334155' : '#e2e8f0',
+              borderColor: 'var(--border-light)',
             }}
           >
             <option value="">{t.courseTable.allDepartments}</option>
@@ -273,7 +275,7 @@ export function CourseDataTable({
         <div className="cdt-empty">
           <div
             className="cdt-empty-icon"
-            style={{ background: darkMode ? '#1e293b' : '#f1f5f9' }}
+            style={{ background: 'var(--bg-mute)' }}
           >
             <BookOpen className="w-6 h-6" style={{ color: textSecondary }} />
           </div>
@@ -291,7 +293,7 @@ export function CourseDataTable({
         <div className="cdt-empty">
           <div
             className="cdt-empty-icon"
-            style={{ background: darkMode ? '#1e293b' : '#f1f5f9' }}
+            style={{ background: 'var(--bg-mute)' }}
           >
             <Search className="w-6 h-6" style={{ color: textSecondary }} />
           </div>
@@ -310,27 +312,27 @@ export function CourseDataTable({
           <table className="cdt-table">
             <thead>
               <tr style={{ background: headerBg }}>
-                <th style={{ color: textSecondary }} onClick={() => handleSort('dept_id')}>
+                <th style={{ color: textSecondary }} onClick={() => handleSort('department_name')}>
                   <div className="cdt-th-content">
                     {t.courseTable.dept}
-                    <span className={`cdt-sort-icon ${sortField === 'dept_id' ? 'active' : ''}`}>
-                      <SortIcon field="dept_id" />
+                    <span className={`cdt-sort-icon ${sortField === 'department_name' ? 'active' : ''}`}>
+                      <SortIcon field="department_name" />
                     </span>
                   </div>
                 </th>
-                <th style={{ color: textSecondary }} onClick={() => handleSort('code')}>
+                <th style={{ color: textSecondary }} onClick={() => handleSort('course_code')}>
                   <div className="cdt-th-content">
                     {t.courseTable.code}
-                    <span className={`cdt-sort-icon ${sortField === 'code' ? 'active' : ''}`}>
-                      <SortIcon field="code" />
+                    <span className={`cdt-sort-icon ${sortField === 'course_code' ? 'active' : ''}`}>
+                      <SortIcon field="course_code" />
                     </span>
                   </div>
                 </th>
-                <th style={{ color: textSecondary }} onClick={() => handleSort('name')}>
+                <th style={{ color: textSecondary }} onClick={() => handleSort('course_name')}>
                   <div className="cdt-th-content">
                     {t.courseTable.courseName}
-                    <span className={`cdt-sort-icon ${sortField === 'name' ? 'active' : ''}`}>
-                      <SortIcon field="name" />
+                    <span className={`cdt-sort-icon ${sortField === 'course_name' ? 'active' : ''}`}>
+                      <SortIcon field="course_name" />
                     </span>
                   </div>
                 </th>
@@ -350,11 +352,11 @@ export function CourseDataTable({
                     </span>
                   </div>
                 </th>
-                <th style={{ color: textSecondary }} onClick={() => handleSort('program_semester')}>
+                <th style={{ color: textSecondary }} onClick={() => handleSort('course_semester')}>
                   <div className="cdt-th-content">
                     {t.courseTable.sem}
-                    <span className={`cdt-sort-icon ${sortField === 'program_semester' ? 'active' : ''}`}>
-                      <SortIcon field="program_semester" />
+                    <span className={`cdt-sort-icon ${sortField === 'course_semester' ? 'active' : ''}`}>
+                      <SortIcon field="course_semester" />
                     </span>
                   </div>
                 </th>
@@ -366,7 +368,7 @@ export function CourseDataTable({
             <tbody>
               {sorted.map((course, idx) => (
                 <tr
-                  key={`${course.dept_id}-${course.code}-${idx}`}
+                  key={`${course.course_id}-${idx}`}
                   style={{ cursor: 'default' }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.backgroundColor = hoverBg;
@@ -380,39 +382,41 @@ export function CourseDataTable({
                     <span
                       className="cdt-badge-dept"
                       style={(() => {
+                        // Keyed by backend Departments.department_name (full names).
                         const colors: Record<string, { bg: string; text: string }> = {
-                          'BİL':  { bg: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(79,70,229,0.1))', text: '#6366f1' },
-                          'CSE':  { bg: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(37,99,235,0.1))', text: '#3b82f6' },
-                          'EEM':  { bg: 'linear-gradient(135deg, rgba(168,85,247,0.15), rgba(139,92,246,0.1))', text: '#a855f7' },
-                          'EEE':  { bg: 'linear-gradient(135deg, rgba(192,38,211,0.15), rgba(168,85,247,0.1))', text: '#c026d3' },
-                          'END':  { bg: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.1))', text: '#f59e0b' },
-                          'IND':  { bg: 'linear-gradient(135deg, rgba(234,179,8,0.15), rgba(202,138,4,0.1))', text: '#eab308' },
-                          'MAK':  { bg: 'linear-gradient(135deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1))', text: '#ef4444' },
-                          'ME':   { bg: 'linear-gradient(135deg, rgba(244,63,94,0.15), rgba(225,29,72,0.1))', text: '#f43f5e' },
-                          'BME':  { bg: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1))', text: '#10b981' },
-                          'BENG': { bg: 'linear-gradient(135deg, rgba(20,184,166,0.15), rgba(13,148,136,0.1))', text: '#14b8a6' },
-                          'AI':   { bg: 'linear-gradient(135deg, rgba(6,182,212,0.15), rgba(8,145,178,0.1))', text: '#06b6d4' },
-                          'CE':   { bg: 'linear-gradient(135deg, rgba(107,114,128,0.15), rgba(75,85,99,0.1))', text: '#6b7280' },
+                          'Bilgisayar Mühendisliği':              { bg: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(79,70,229,0.1))', text: '#6366f1' },
+                          'Computer Science and Engineering':     { bg: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(37,99,235,0.1))', text: '#3b82f6' },
+                          'Elektrik-Elektronik Mühendisliği':     { bg: 'linear-gradient(135deg, rgba(168,85,247,0.15), rgba(139,92,246,0.1))', text: '#a855f7' },
+                          'Electrical and Electronics Engineering': { bg: 'linear-gradient(135deg, rgba(192,38,211,0.15), rgba(168,85,247,0.1))', text: '#c026d3' },
+                          'Endüstri Mühendisliği':                { bg: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.1))', text: '#f59e0b' },
+                          'Industrial Engineering':               { bg: 'linear-gradient(135deg, rgba(234,179,8,0.15), rgba(202,138,4,0.1))', text: '#eab308' },
+                          'Makine Mühendisliği':                  { bg: 'linear-gradient(135deg, rgba(239,68,68,0.15), rgba(220,38,38,0.1))', text: '#ef4444' },
+                          'Mechanical Engineering':               { bg: 'linear-gradient(135deg, rgba(244,63,94,0.15), rgba(225,29,72,0.1))', text: '#f43f5e' },
+                          'Biyomedikal Mühendisliği':             { bg: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.1))', text: '#10b981' },
+                          'Biomedical Engineering':               { bg: 'linear-gradient(135deg, rgba(20,184,166,0.15), rgba(13,148,136,0.1))', text: '#14b8a6' },
+                          'Yapay Zeka Mühendisliği':              { bg: 'linear-gradient(135deg, rgba(6,182,212,0.15), rgba(8,145,178,0.1))', text: '#06b6d4' },
+                          'Civil Engineering':                    { bg: 'linear-gradient(135deg, rgba(107,114,128,0.15), rgba(75,85,99,0.1))', text: '#6b7280' },
                         };
-                        const c = colors[course.dept_id] || { bg: 'linear-gradient(135deg, rgba(107,114,128,0.15), rgba(75,85,99,0.1))', text: '#6b7280' };
+                        const fallback = { bg: 'linear-gradient(135deg, rgba(107,114,128,0.15), rgba(75,85,99,0.1))', text: '#6b7280' };
+                        const c = (course.department_name && colors[course.department_name]) || fallback;
                         return { background: c.bg, color: c.text };
                       })()}
                     >
-                      {course.dept_id}
+                      {course.department_name ?? '—'}
                     </span>
                   </td>
 
                   {/* Code */}
                   <td>
                     <span className="cdt-code" style={{ color: textPrimary }}>
-                      {course.code}
+                      {course.course_code}
                     </span>
                   </td>
 
                   {/* Name */}
                   <td>
                     <span className="cdt-course-name" style={{ color: textPrimary }}>
-                      {course.name}
+                      {course.course_name}
                     </span>
                   </td>
 
@@ -445,7 +449,7 @@ export function CourseDataTable({
                         color: textPrimary,
                       }}
                     >
-                      {course.program_semester}
+                      {course.course_semester}
                     </span>
                   </td>
 
@@ -463,7 +467,7 @@ export function CourseDataTable({
                           {t.courseTable.inClass}
                         </span>
                       )}
-                      {course.is_service_course && (
+                      {course.is_service && (
                         <span className="cdt-badge cdt-badge-service">
                           <FlaskConical className="w-3 h-3" />
                           {t.courseTable.service}

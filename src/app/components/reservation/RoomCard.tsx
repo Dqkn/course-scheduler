@@ -14,17 +14,17 @@ export function RoomCard({ room, darkMode, onClick }: Props) {
   const { t } = useLocale();
   const rt = t.reservation;
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
 
   const typeColors: Record<string, string> = {
-    derslik: '#6366f1',
+    derslik: 'var(--brand-primary)',
     amfi: '#f59e0b',
-    laboratuvar: '#0891b2',
+    laboratuvar: 'var(--brand-accent)',
   };
-  const accent = typeColors[room.type] ?? '#6366f1';
+  const accent = typeColors[room.type] ?? 'var(--brand-primary)';
 
   if (!room.isAvailable) {
     return (

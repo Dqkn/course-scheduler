@@ -38,10 +38,10 @@ export function ReservationConfirmModal({
   const rt = t.reservation;
   const [state, setState] = useState<ModalState>('confirm');
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
   const dateFormatted = locale === 'tr' ? formatDateTr(filters.date) : formatDateEn(filters.date);
 
   function handleConfirm() {
@@ -137,8 +137,8 @@ export function ReservationConfirmModal({
                       style={{
                         fontSize: '12px',
                         fontWeight: 600,
-                        backgroundColor: darkMode ? '#312e81' : '#e0e7ff',
-                        color: darkMode ? '#a5b4fc' : '#4338ca',
+                        backgroundColor: darkMode ? '#312e81' : 'var(--brand-primary-soft)',
+                        color: darkMode ? '#a5b4fc' : 'var(--brand-primary-active)',
                       }}
                     >
                       {slot}
@@ -170,8 +170,8 @@ export function ReservationConfirmModal({
                 style={{
                   fontSize: '13px',
                   fontWeight: 500,
-                  backgroundColor: darkMode ? '#172554' : '#eff6ff',
-                  color: darkMode ? '#93c5fd' : '#1d4ed8',
+                  backgroundColor: darkMode ? '#172554' : 'var(--brand-primary-soft)',
+                  color: darkMode ? '#93c5fd' : 'var(--brand-primary-active)',
                 }}
               >
                 {rt.confirmQuestion}
@@ -188,7 +188,7 @@ export function ReservationConfirmModal({
                 className="flex-1 px-4 py-2.5 rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   fontSize: '13px',
-                  backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
+                  backgroundColor: 'var(--bg-mute)',
                   color: muted,
                 }}
               >
@@ -199,7 +199,7 @@ export function ReservationConfirmModal({
                 className="flex-1 px-4 py-2.5 rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   fontSize: '13px',
-                  background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                  background: 'var(--brand-gradient)',
                   color: '#ffffff',
                 }}
               >
@@ -213,7 +213,7 @@ export function ReservationConfirmModal({
           <div className="flex flex-col items-center justify-center py-16 px-8">
             <Loader2
               className="w-12 h-12 animate-spin mb-4"
-              style={{ color: '#6366f1' }}
+              style={{ color: 'var(--brand-primary)' }}
             />
             <p style={{ fontSize: '15px', fontWeight: 600, color: text }}>
               {rt.saving}
@@ -270,7 +270,7 @@ export function ReservationConfirmModal({
               className="px-8 py-2.5 rounded-xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98]"
               style={{
                 fontSize: '14px',
-                backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
+                backgroundColor: 'var(--bg-mute)',
                 color: text,
               }}
             >
@@ -284,8 +284,8 @@ export function ReservationConfirmModal({
 }
 
 function DetailRow({ label, value, darkMode }: { label: string; value: string; darkMode: boolean }) {
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
   return (
     <div className="flex items-start justify-between gap-4">
       <span style={{ fontSize: '13px', color: muted }}>{label}</span>

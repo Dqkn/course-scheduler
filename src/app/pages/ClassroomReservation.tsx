@@ -7,6 +7,7 @@ import { ReservationResults } from '../components/reservation/ReservationResults
 import { ReservationConfirmModal } from '../components/reservation/ReservationConfirmModal';
 import { ActiveReservations } from '../components/reservation/ActiveReservations';
 import { AllReservationsView } from '../components/reservation/AllReservationsView';
+import { ClassroomMatrixView } from '../components/reservation/ClassroomMatrixView';
 import type { ReservationView, ReservationFilterState, Room } from '../types/reservationTypes';
 
 export function ClassroomReservation() {
@@ -52,7 +53,7 @@ export function ClassroomReservation() {
   return (
     <div
       className="flex flex-col h-full"
-      style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
+      style={{ backgroundColor: 'var(--bg-page)' }}
     >
 
       {/* View Router */}
@@ -69,6 +70,7 @@ export function ClassroomReservation() {
           darkMode={darkMode}
           onSearch={handleSearch}
           onBack={() => handleNavigate('home')}
+          onManualSearch={() => handleNavigate('matrix')}
         />
       )}
 
@@ -84,7 +86,7 @@ export function ClassroomReservation() {
       {view === 'active' && (
         <ActiveReservations
           darkMode={darkMode}
-          userId={currentUser.id}
+          userId={String(currentUser.user_id)}
           onBack={() => handleNavigate('home')}
         />
       )}
@@ -96,14 +98,21 @@ export function ClassroomReservation() {
         />
       )}
 
+      {view === 'matrix' && (
+        <ClassroomMatrixView
+          darkMode={darkMode}
+          onBack={() => handleNavigate('home')}
+        />
+      )}
+
       {/* Confirm Modal */}
       {selectedRoom && filters && (
         <ReservationConfirmModal
           darkMode={darkMode}
           room={selectedRoom}
           filters={filters}
-          userId={currentUser.id}
-          userName={currentUser.name}
+          userId={String(currentUser.user_id)}
+          userName={currentUser.full_name}
           userRole={currentUser.role}
           onClose={() => setSelectedRoom(null)}
           onReserved={handleReserved}

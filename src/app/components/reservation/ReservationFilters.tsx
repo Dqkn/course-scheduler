@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Clock, Building2, Users, Search, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, Building2, Users, Search, AlertCircle, Grid3X3 } from 'lucide-react';
 import { useLocale } from '../../i18n';
 import {
   ALL_TIME_SLOTS,
@@ -14,9 +14,10 @@ interface Props {
   darkMode: boolean;
   onSearch: (filters: ReservationFilterState) => void;
   onBack: () => void;
+  onManualSearch?: () => void;
 }
 
-export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
+export function ReservationFilters({ darkMode, onSearch, onBack, onManualSearch }: Props) {
   const { t, locale } = useLocale();
   const rt = t.reservation;
 
@@ -26,11 +27,11 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
   const [minCapacity, setMinCapacity] = useState<number>(0);
   const [error, setError] = useState('');
 
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
-  const pillBg = darkMode ? '#1e293b' : '#f0f0f0';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
+  const pillBg = 'var(--bg-mute)';
   const today = getTodayString();
 
   function toggleSlot(slot: TimeSlot) {
@@ -96,7 +97,7 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
             style={{ backgroundColor: surface, borderColor: border }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Calendar className="w-4 h-4" style={{ color: '#6366f1' }} />
+              <Calendar className="w-4 h-4" style={{ color: 'var(--brand-primary)' }} />
               <span style={{ fontSize: '12px', fontWeight: 600, color: muted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {rt.selectDate}
               </span>
@@ -122,7 +123,7 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
             style={{ backgroundColor: surface, borderColor: border }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Building2 className="w-4 h-4" style={{ color: '#0891b2' }} />
+              <Building2 className="w-4 h-4" style={{ color: 'var(--brand-accent)' }} />
               <span style={{ fontSize: '12px', fontWeight: 600, color: muted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {rt.roomType}
               </span>
@@ -197,13 +198,13 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
                       fontSize: '11px',
                       fontWeight: isSelected ? 600 : 400,
                       backgroundColor: isSelected
-                        ? darkMode ? '#312e81' : '#e0e7ff'
+                        ? darkMode ? '#312e81' : 'var(--brand-primary-soft)'
                         : pillBg,
                       color: isSelected
-                        ? darkMode ? '#a5b4fc' : '#4338ca'
+                        ? darkMode ? '#a5b4fc' : 'var(--brand-primary-active)'
                         : muted,
                       border: `1px solid ${isSelected
-                        ? darkMode ? '#4338ca' : '#a5b4fc'
+                        ? darkMode ? '#4338ca' : 'var(--brand-primary)'
                         : 'transparent'}`,
                     }}
                   >
@@ -230,19 +231,40 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
           </div>
         )}
 
-        {/* Search Button */}
-        <button
-          onClick={handleSearch}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-          style={{
-            fontSize: '14px',
-            background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-            color: '#ffffff',
-          }}
-        >
-          <Search className="w-4 h-4" />
-          {rt.searchRooms}
-        </button>
+        {/* Search Button + Manuel Arama */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <button
+            onClick={handleSearch}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              fontSize: '14px',
+              background: 'var(--brand-gradient)',
+              color: '#ffffff',
+            }}
+          >
+            <Search className="w-4 h-4" />
+            {rt.searchRooms}
+          </button>
+
+          {onManualSearch && (
+            <>
+              <span style={{ fontSize: '12px', color: muted }}>{rt.manualSearchDesc}</span>
+              <button
+                onClick={onManualSearch}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl font-semibold border transition-all hover:scale-[1.02] active:scale-[0.98]"
+                style={{
+                  fontSize: '14px',
+                  borderColor: border,
+                  backgroundColor: surface,
+                  color: text,
+                }}
+              >
+                <Grid3X3 className="w-4 h-4" style={{ color: '#6366f1' }} />
+                {rt.manualSearch}
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

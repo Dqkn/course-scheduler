@@ -1,6 +1,6 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { AlertTriangle, Clock, MapPin, User } from 'lucide-react';
+import { AlertTriangle, Clock, MapPin, User, Pin } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
 import { COURSE_COLORS, DAYS, DAY_LABELS, Course, DayKey } from '../data/mockData';
@@ -121,7 +121,7 @@ function useCurrentMinute() {
    ═══════════════════════════════════════════════════════════════════════ */
 
 export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
-  const { darkMode, filters, setSelectedCourse, openCourseIds, scheduledCourses, currentUser } = useApp();
+  const { darkMode, filters, setSelectedCourse, openCourseIds, scheduledCourses, currentUser, pinnedCourseIds } = useApp();
   const { t } = useLocale();
   const [hoveredCourse, setHoveredCourse] = useState<HoveredState | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -131,7 +131,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
   const visibleCourses = useMemo(() => {
     return scheduledCourses.filter(c => {
       if (!openCourseIds.includes(c.id)) return false;
-      if (currentUser?.role === 'department_secretary' && currentUser.department && c.department !== currentUser.department) return false;
+      if (currentUser?.role === 'secretary' && currentUser.department_name && c.department !== currentUser.department_name) return false;
       if (filterFn && !filterFn(c)) return false;
       if (filters.department && c.department !== filters.department) return false;
       if (filters.lecturer && c.lecturer !== filters.lecturer) return false;
@@ -196,10 +196,10 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
   }, []);
 
   /* ── Shared style tokens ─────────────────────────────────────────── */
-  const bg = darkMode ? '#0b1120' : '#fafafa';
-  const headerBg = darkMode ? '#0f172a' : '#ffffff';
-  const borderClr = darkMode ? '#1e293b' : '#d1d5db';
-  const gutterBg = darkMode ? '#0c1425' : '#f5f5f5';
+  const bg = 'var(--bg-soft)';
+  const headerBg = 'var(--bg-surface)';
+  const borderClr = 'var(--border-light)';
+  const gutterBg = 'var(--bg-mute)';
   const lineHour = darkMode ? 'rgba(51,65,85,0.45)' : 'rgba(180,190,200,0.7)';
   const lineHalf = darkMode ? 'rgba(51,65,85,0.18)' : 'rgba(180,190,200,0.3)';
   const zebraEven = darkMode ? 'rgba(15,23,42,0.35)' : 'rgba(240,240,240,0.55)';
@@ -231,7 +231,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
               borderColor: borderClr,
             }}
           >
-            <Clock className="w-3.5 h-3.5" style={{ color: darkMode ? '#475569' : '#94a3b8' }} />
+            <Clock className="w-3.5 h-3.5" style={{ color: 'var(--text-very-faint)' }} />
           </div>
 
           {DAYS.map((day, i) => (
@@ -250,7 +250,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
                   fontSize: '13px',
                   fontWeight: 800,
                   letterSpacing: '0.06em',
-                  color: darkMode ? '#e2e8f0' : '#1a1a2e',
+                  color: 'var(--text-primary)',
                 }}
               >
                 {day.toUpperCase()}
@@ -297,7 +297,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
                       fontSize: '11px',
                       fontWeight: 700,
                       fontVariantNumeric: 'tabular-nums',
-                      color: darkMode ? '#64748b' : '#64748b',
+                      color: 'var(--text-faint)',
                       transform: 'translateY(-7px)',
                       letterSpacing: '0.02em',
                     }}
@@ -378,6 +378,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
                     key={course.id}
                     course={course}
                     darkMode={darkMode}
+                    isPinned={pinnedCourseIds.includes(course.id)}
                     onClick={() => setSelectedCourse(course)}
                     onMouseEnter={(e) => handleCourseHover(e, course)}
                   />
@@ -455,7 +456,7 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
           </span>
           <span
             className="text-[10px] font-medium"
-            style={{ color: darkMode ? '#64748b' : '#94a3b8' }}
+            style={{ color: 'var(--text-faint)' }}
           >
             {hovered.course.startTime} – {hovered.course.endTime}
           </span>
@@ -464,7 +465,7 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
         {/* Course name */}
         <h4
           className="text-sm font-bold leading-snug"
-          style={{ color: darkMode ? '#f1f5f9' : '#0f172a' }}
+          style={{ color: 'var(--text-primary)' }}
         >
           {hovered.course.name}
         </h4>
@@ -472,24 +473,24 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
         {/* Details */}
         <div
           className="flex flex-col gap-1 pt-1.5 mt-0.5 border-t"
-          style={{ borderColor: darkMode ? '#1e293b' : '#f1f5f9' }}
+          style={{ borderColor: 'var(--bg-mute)' }}
         >
           <div className="flex items-center gap-2 text-[11px]">
-            <User className="w-3 h-3 shrink-0" style={{ color: darkMode ? '#64748b' : '#94a3b8' }} />
-            <span className="font-semibold" style={{ color: darkMode ? '#7dd3fc' : '#0284c7' }}>
+            <User className="w-3 h-3 shrink-0" style={{ color: 'var(--text-faint)' }} />
+            <span className="font-semibold" style={{ color: darkMode ? '#7dd3fc' : 'var(--brand-primary)' }}>
               {hovered.course.lecturer}
             </span>
           </div>
           <div className="flex items-center gap-2 text-[11px]">
-            <MapPin className="w-3 h-3 shrink-0" style={{ color: darkMode ? '#64748b' : '#94a3b8' }} />
-            <span className="font-medium" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
+            <MapPin className="w-3 h-3 shrink-0" style={{ color: 'var(--text-faint)' }} />
+            <span className="font-medium" style={{ color: 'var(--text-faint)' }}>
               {hovered.course.room}
             </span>
             <span
               className="text-[10px] px-1.5 py-px rounded font-medium"
               style={{
-                backgroundColor: darkMode ? '#1e293b' : '#f1f5f9',
-                color: darkMode ? '#94a3b8' : '#64748b',
+                backgroundColor: 'var(--bg-mute)',
+                color: 'var(--text-faint)',
               }}
             >
               {hovered.course.classLevel}
@@ -498,9 +499,9 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
         </div>
 
         {/* Capacity bar */}
-        <div className="pt-1.5 mt-0.5 border-t" style={{ borderColor: darkMode ? '#1e293b' : '#f1f5f9' }}>
+        <div className="pt-1.5 mt-0.5 border-t" style={{ borderColor: 'var(--bg-mute)' }}>
           <div className="flex items-center justify-between mb-1">
-            <span className="text-[10px] font-semibold" style={{ color: darkMode ? '#94a3b8' : '#64748b' }}>
+            <span className="text-[10px] font-semibold" style={{ color: 'var(--text-faint)' }}>
               {t.tooltip.capacity}
             </span>
             <span className="text-[10px] font-bold" style={{ color: darkMode ? '#e2e8f0' : '#334155' }}>
@@ -510,7 +511,7 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
           </div>
           <div
             className="w-full h-1.5 rounded-full overflow-hidden"
-            style={{ backgroundColor: darkMode ? '#1e293b' : '#e2e8f0' }}
+            style={{ backgroundColor: 'var(--bg-mute)' }}
           >
             <div
               className="h-full rounded-full transition-all duration-500"
@@ -551,11 +552,13 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
 function CourseCard({
   course,
   darkMode,
+  isPinned,
   onClick,
   onMouseEnter,
 }: {
   course: LayoutCourse;
   darkMode: boolean;
+  isPinned: boolean;
   onClick: () => void;
   onMouseEnter: (e: React.MouseEvent<HTMLDivElement>) => void;
 }) {
@@ -612,6 +615,21 @@ function CourseCard({
               : 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 60%)',
           }}
         />
+
+        {/* Pin badge */}
+        {isPinned && !course.hasConflict && (
+          <div className="absolute top-1.5 right-1.5 z-10">
+            <div
+              className="w-4 h-4 rounded-full flex items-center justify-center"
+              style={{
+                backgroundColor: '#d97706',
+                boxShadow: '0 2px 6px rgba(217,119,6,0.5)',
+              }}
+            >
+              <Pin className="w-2.5 h-2.5 text-white" />
+            </div>
+          </div>
+        )}
 
         {/* Conflict badge */}
         {course.hasConflict && (

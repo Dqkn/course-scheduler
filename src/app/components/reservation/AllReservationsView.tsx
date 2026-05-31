@@ -21,11 +21,11 @@ export function AllReservationsView({ darkMode, onBack }: Props) {
   const [roomTypeFilter, setRoomTypeFilter] = useState('');
 
   // ── Style tokens ──
-  const border = darkMode ? '#1e293b' : '#d1d5db';
-  const surface = darkMode ? '#0f172a' : '#ffffff';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const muted = darkMode ? '#94a3b8' : '#475569';
-  const pillBg = darkMode ? '#1e293b' : '#f0f0f0';
+  const border = 'var(--border-light)';
+  const surface = 'var(--bg-surface)';
+  const text = 'var(--text-primary)';
+  const muted = 'var(--text-muted)';
+  const pillBg = 'var(--bg-mute)';
 
   // ── Data ──
   const weekDates = useMemo(() => getWeekDates(weekOffset), [weekOffset]);
@@ -106,10 +106,10 @@ export function AllReservationsView({ darkMode, onBack }: Props) {
             className="px-2 py-1 rounded-md text-xs font-semibold transition-colors hover:opacity-80"
             style={{
               backgroundColor: weekOffset === 0
-                ? darkMode ? '#312e81' : '#e0e7ff'
+                ? darkMode ? '#312e81' : 'var(--brand-primary-soft)'
                 : pillBg,
               color: weekOffset === 0
-                ? darkMode ? '#a5b4fc' : '#4338ca'
+                ? darkMode ? '#a5b4fc' : 'var(--brand-primary-active)'
                 : muted,
               fontSize: '11px',
             }}
@@ -127,7 +127,7 @@ export function AllReservationsView({ darkMode, onBack }: Props) {
 
         {/* Week label */}
         <div className="flex items-center gap-1.5 shrink-0">
-          <CalendarDays className="w-3.5 h-3.5" style={{ color: '#6366f1' }} />
+          <CalendarDays className="w-3.5 h-3.5" style={{ color: 'var(--brand-primary)' }} />
           <span style={{ fontSize: '12px', fontWeight: 600, color: text, fontVariantNumeric: 'tabular-nums' }}>
             {weekLabel}
           </span>
@@ -199,7 +199,7 @@ export function AllReservationsView({ darkMode, onBack }: Props) {
           style={{
             fontSize: '10px',
             fontWeight: 600,
-            backgroundColor: darkMode ? '#1e293b' : '#f0f0f0',
+            backgroundColor: 'var(--bg-mute)',
             color: muted,
           }}
         >
@@ -212,7 +212,7 @@ export function AllReservationsView({ darkMode, onBack }: Props) {
         <div className="flex-1 flex flex-col items-center justify-center px-4 py-16">
           <div
             className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3"
-            style={{ backgroundColor: darkMode ? '#1e293b' : '#f1f5f9' }}
+            style={{ backgroundColor: 'var(--bg-mute)' }}
           >
             <CalendarDays className="w-6 h-6" style={{ color: muted }} />
           </div>

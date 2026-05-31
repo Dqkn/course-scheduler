@@ -6,8 +6,8 @@ export type DepartmentFilter = string;
 
 export function useCourseFilters(courses: Course[]) {
   const { currentUser } = useApp();
-  const isSecretary = currentUser?.role === 'department_secretary';
-  const secretaryDept = currentUser?.department || '';
+  const isSecretary = currentUser?.role === 'secretary';
+  const secretaryDept = currentUser?.department_name || '';
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState<DepartmentFilter>(isSecretary ? secretaryDept : '');

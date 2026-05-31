@@ -21,9 +21,9 @@ export function Landing() {
       features: t.landing.adminFeatures,
       enterLabel: t.landing.adminEnter,
       tag: t.landing.adminTag,
-      gradient: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-      glowColor: 'rgba(99,102,241,0.3)',
-      tagColor: { bg: '#ede9fe', text: '#5b21b6' },
+      gradient: 'var(--brand-gradient)',
+      glowColor: 'var(--brand-glow)',
+      tagColor: { bg: 'var(--brand-primary-soft)', text: 'var(--brand-primary-active)' },
       tagColorDark: { bg: '#2e1065', text: '#c4b5fd' },
     },
     {
@@ -36,9 +36,9 @@ export function Landing() {
       features: t.landing.academicFeatures,
       enterLabel: t.landing.academicEnter,
       tag: t.landing.academicTag,
-      gradient: 'linear-gradient(135deg, #0891b2, #0d9488)',
-      glowColor: 'rgba(8,145,178,0.3)',
-      tagColor: { bg: '#ccfbf1', text: '#115e59' },
+      gradient: 'var(--brand-gradient-accent)',
+      glowColor: 'var(--brand-glow-accent)',
+      tagColor: { bg: 'var(--brand-accent-soft)', text: 'var(--brand-accent)' },
       tagColorDark: { bg: '#042f2e', text: '#5eead4' },
     },
   ];
@@ -50,7 +50,7 @@ export function Landing() {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-4 py-12 relative overflow-x-hidden overflow-y-auto"
-      style={{ backgroundColor: darkMode ? '#050c1a' : '#fafafa' }}
+      style={{ backgroundColor: 'var(--bg-page)' }}
     >
       {/* Background decoration */}
       <div
@@ -76,7 +76,7 @@ export function Landing() {
       <div className="relative flex flex-col items-center mb-12">
         <div
           className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 shadow-xl"
-          style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }}
+          style={{ background: 'var(--logo-gradient)' }}
         >
           <Calendar className="w-8 h-8 text-white" />
         </div>
@@ -87,19 +87,22 @@ export function Landing() {
               fontSize: '2.5rem',
               fontWeight: 800,
               letterSpacing: '-0.04em',
-              color: darkMode ? '#f1f5f9' : '#1a1a2e',
+              color: 'var(--text-primary)',
               lineHeight: 1,
             }}
           >
             OptiSched
           </h1>
-          <Sparkles className="w-5 h-5 text-violet-500 mb-1" />
+          <Sparkles
+            className="w-5 h-5 mb-1"
+            style={{ color: darkMode ? '#8b5cf6' : 'var(--brand-primary)' }}
+          />
         </div>
 
         <p
           style={{
             fontSize: '1.05rem',
-            color: darkMode ? '#94a3b8' : '#475569',
+            color: 'var(--text-muted)',
             textAlign: 'center',
             maxWidth: 420,
             lineHeight: 1.6,
@@ -113,9 +116,9 @@ export function Landing() {
         <div
           className="mt-4 flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-medium"
           style={{
-            borderColor: darkMode ? '#334155' : '#d1d5db',
-            color: darkMode ? '#94a3b8' : '#475569',
-            backgroundColor: darkMode ? '#1e293b' : '#ffffff',
+            borderColor: 'var(--border-light)',
+            color: 'var(--text-muted)',
+            backgroundColor: 'var(--bg-surface)',
             fontSize: '13px',
           }}
         >
@@ -135,8 +138,8 @@ export function Landing() {
               onClick={() => enter(r.path)}
               className="group text-left rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
               style={{
-                backgroundColor: darkMode ? '#0f172a' : '#ffffff',
-                borderColor: darkMode ? '#1e293b' : '#d1d5db',
+                backgroundColor: 'var(--bg-surface)',
+                borderColor: 'var(--border-light)',
                 boxShadow: darkMode
                   ? `0 0 0 0 ${r.glowColor}`
                   : '0 1px 4px rgba(0,0,0,0.08)',
@@ -149,7 +152,7 @@ export function Landing() {
                 (e.currentTarget as HTMLElement).style.boxShadow = darkMode
                   ? `0 0 0 0 ${r.glowColor}`
                   : '0 1px 4px rgba(0,0,0,0.08)';
-                (e.currentTarget as HTMLElement).style.borderColor = darkMode ? '#1e293b' : '#d1d5db';
+                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-light)';
               }}
             >
               {/* Icon */}
@@ -167,7 +170,7 @@ export function Landing() {
                     style={{
                       fontSize: '1.1rem',
                       fontWeight: 700,
-                      color: darkMode ? '#f1f5f9' : '#1a1a2e',
+                      color: 'var(--text-primary)',
                       display: 'block',
                       lineHeight: 1.2,
                     }}
@@ -177,7 +180,7 @@ export function Landing() {
                   <span
                     style={{
                       fontSize: '13px',
-                      color: darkMode ? '#64748b' : '#64748b',
+                      color: 'var(--text-faint)',
                     }}
                   >
                     {r.sublabel}
@@ -195,7 +198,7 @@ export function Landing() {
               <p
                 style={{
                   fontSize: '13px',
-                  color: darkMode ? '#94a3b8' : '#475569',
+                  color: 'var(--text-muted)',
                   lineHeight: 1.6,
                   marginTop: 10,
                   marginBottom: 14,
@@ -212,7 +215,7 @@ export function Landing() {
                       className="w-1 h-1 rounded-full shrink-0"
                       style={{ backgroundColor: tag.text }}
                     />
-                    <span style={{ fontSize: '13px', color: darkMode ? '#94a3b8' : '#475569' }}>{f}</span>
+                    <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{f}</span>
                   </li>
                 ))}
               </ul>
@@ -238,17 +241,19 @@ export function Landing() {
         <div
           className="flex items-center justify-between rounded-xl border px-5 py-4 transition-all duration-300 hover:-translate-y-0.5"
           style={{
-            backgroundColor: darkMode ? '#0f172a' : '#ffffff',
-            borderColor: darkMode ? '#1e293b' : '#d1d5db',
+            backgroundColor: 'var(--bg-surface)',
+            borderColor: 'var(--border-light)',
             boxShadow: darkMode ? 'none' : '0 1px 4px rgba(0,0,0,0.08)',
           }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 30px rgba(59,130,246,0.15), 0 0 0 1px rgba(59,130,246,0.2)';
-            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(59,130,246,0.3)';
+            (e.currentTarget as HTMLElement).style.boxShadow = darkMode
+              ? '0 8px 30px rgba(59,130,246,0.15), 0 0 0 1px rgba(59,130,246,0.2)'
+              : '0 8px 30px var(--brand-glow), 0 0 0 1px var(--brand-glow)';
+            (e.currentTarget as HTMLElement).style.borderColor = darkMode ? 'rgba(59,130,246,0.3)' : 'var(--brand-primary)';
           }}
           onMouseLeave={e => {
             (e.currentTarget as HTMLElement).style.boxShadow = darkMode ? 'none' : '0 1px 4px rgba(0,0,0,0.08)';
-            (e.currentTarget as HTMLElement).style.borderColor = darkMode ? '#1e293b' : '#d1d5db';
+            (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-light)';
           }}
         >
           <div className="flex items-center gap-3">
@@ -257,12 +262,12 @@ export function Landing() {
               style={{
                 background: darkMode
                   ? 'linear-gradient(135deg, #1e3a5f, #172554)'
-                  : 'linear-gradient(135deg, #dbeafe, #bfdbfe)',
+                  : 'var(--brand-primary-soft)',
               }}
             >
               <BookOpen
                 className="w-4.5 h-4.5"
-                style={{ color: darkMode ? '#60a5fa' : '#2563eb' }}
+                style={{ color: darkMode ? '#60a5fa' : 'var(--brand-primary)' }}
               />
             </div>
             <div className="text-left">
@@ -270,14 +275,14 @@ export function Landing() {
                 style={{
                   fontSize: '14px',
                   fontWeight: 700,
-                  color: darkMode ? '#f1f5f9' : '#1a1a2e',
+                  color: 'var(--text-primary)',
                   display: 'block',
                 }}
               >
                 {t.landing.courseCatalog}
               </span>
               <span
-                style={{ fontSize: '13px', color: darkMode ? '#64748b' : '#64748b' }}
+                style={{ fontSize: '13px', color: 'var(--text-faint)' }}
               >
                 {t.landing.courseCatalogDesc}
               </span>
@@ -285,7 +290,7 @@ export function Landing() {
           </div>
           <ArrowRight
             className="w-4 h-4 transition-transform group-hover:translate-x-1"
-            style={{ color: darkMode ? '#60a5fa' : '#2563eb' }}
+            style={{ color: darkMode ? '#60a5fa' : 'var(--brand-primary)' }}
           />
         </div>
       </button>
@@ -293,7 +298,7 @@ export function Landing() {
       {/* Footer */}
       <p
         className="relative mt-10 text-center"
-        style={{ fontSize: '12px', color: darkMode ? '#334155' : '#94a3b8' }}
+        style={{ fontSize: '12px', color: 'var(--text-very-faint)' }}
       >
         {t.landing.footer}
       </p>

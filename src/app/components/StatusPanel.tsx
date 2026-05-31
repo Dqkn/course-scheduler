@@ -30,11 +30,11 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
 
   const totalStudents = scheduledCourses.reduce((sum, c) => sum + c.studentsEnrolled, 0);
 
-  const surface = darkMode ? '#1e293b' : '#f5f5f5';
-  const border = darkMode ? '#334155' : '#d1d5db';
-  const muted = darkMode ? '#64748b' : '#475569';
-  const text = darkMode ? '#f1f5f9' : '#1a1a2e';
-  const subText = darkMode ? '#94a3b8' : '#475569';
+  const surface = 'var(--bg-mute)';
+  const border = 'var(--border-light)';
+  const muted = 'var(--text-muted)';
+  const text = 'var(--text-primary)';
+  const subText = 'var(--text-muted)';
 
   function toggle(key: string) {
     setExpanded(prev => prev === key ? null : key);
@@ -46,7 +46,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
       style={{
         width: isMobile ? '85vw' : 256,
         maxWidth: isMobile ? 320 : 'none',
-        backgroundColor: darkMode ? '#0f172a' : '#ffffff',
+        backgroundColor: 'var(--bg-surface)',
         borderColor: isMobile ? 'transparent' : border,
       }}
     >
@@ -55,7 +55,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
         className="px-4 py-3 border-b flex items-center gap-2"
         style={{ borderColor: border }}
       >
-        <Zap className="w-4 h-4" style={{ color: '#6366f1' }} />
+        <Zap className="w-4 h-4" style={{ color: 'var(--brand-primary)' }} />
         <span style={{ fontSize: '13px', fontWeight: 700, color: text, letterSpacing: '-0.01em' }}>
           {t.status.title}
         </span>
@@ -84,7 +84,7 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
         <div className="flex items-center gap-2 mb-2.5">
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-            style={{ backgroundColor: darkMode ? '#1e3a5f' : '#dbeafe' }}
+            style={{ backgroundColor: darkMode ? '#1e3a5f' : 'var(--brand-primary-soft)' }}
           >
             {isCalculating ? (
               <RefreshCw className="w-4 h-4 animate-spin" style={{ color: '#3b82f6' }} />
@@ -231,13 +231,13 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
                   </div>
                   <div
                     className="w-full rounded-full overflow-hidden"
-                    style={{ height: 4, backgroundColor: darkMode ? '#1e293b' : '#e2e8f0' }}
+                    style={{ height: 4, backgroundColor: 'var(--bg-mute)' }}
                   >
                     <div
                       className="h-full rounded-full"
                       style={{
                         width: `${(hours / maxHours) * 100}%`,
-                        backgroundColor: '#6366f1',
+                        backgroundColor: 'var(--brand-primary)',
                       }}
                     />
                   </div>
@@ -271,8 +271,8 @@ export function StatusPanel({ onPublish, isMobile = false }: StatusPanelProps) {
             className="w-full py-2.5 rounded-xl text-white text-xs font-semibold transition-all hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             style={{
               background: currentConflicts > 0 || isCalculating
-                ? darkMode ? '#334155' : '#e2e8f0'
-                : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                ? 'var(--border-light)'
+                : 'var(--brand-gradient)',
               color: currentConflicts > 0 || isCalculating ? muted : 'white',
             }}
           >
@@ -303,10 +303,10 @@ function MetricChip({ label, value, color, darkMode }: { label: string; value: s
   return (
     <div
       className="flex flex-col items-center py-2 rounded-lg"
-      style={{ backgroundColor: darkMode ? '#0f172a' : '#ffffff', border: `1px solid ${darkMode ? '#1e293b' : '#e2e8f0'}` }}
+      style={{ backgroundColor: 'var(--bg-surface)', border: `1px solid ${'var(--bg-mute)'}` }}
     >
       <span style={{ fontSize: '14px', fontWeight: 700, color }}>{value}</span>
-      <span style={{ fontSize: '9px', color: darkMode ? '#64748b' : '#94a3b8', marginTop: 1 }}>{label}</span>
+      <span style={{ fontSize: '9px', color: 'var(--text-faint)', marginTop: 1 }}>{label}</span>
     </div>
   );
 }
@@ -347,13 +347,13 @@ function StatRow({ icon, label, value, darkMode }: { icon: ReactNode; label: str
   return (
     <div
       className="flex items-center gap-2 px-2.5 py-2 rounded-lg"
-      style={{ backgroundColor: darkMode ? '#1e293b' : '#f8fafc' }}
+      style={{ backgroundColor: 'var(--bg-mute)' }}
     >
-      <span style={{ color: darkMode ? '#64748b' : '#94a3b8' }} className="[&>svg]:w-3.5 [&>svg]:h-3.5">
+      <span style={{ color: 'var(--text-faint)' }} className="[&>svg]:w-3.5 [&>svg]:h-3.5">
         {icon}
       </span>
-      <span style={{ fontSize: '11px', color: darkMode ? '#94a3b8' : '#64748b', flex: 1 }}>{label}</span>
-      <span style={{ fontSize: '11px', fontWeight: 600, color: darkMode ? '#f1f5f9' : '#0f172a' }}>{value}</span>
+      <span style={{ fontSize: '11px', color: 'var(--text-faint)', flex: 1 }}>{label}</span>
+      <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-primary)' }}>{value}</span>
     </div>
   );
 }
