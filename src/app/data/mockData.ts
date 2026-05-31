@@ -29,6 +29,7 @@ export interface Course {
   type: CourseType;
   hasConflict?: boolean;
   conflictReason?: string;
+  isPinned?: boolean;
 }
 
 export interface Lecturer {

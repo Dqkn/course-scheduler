@@ -1,4 +1,4 @@
-import { CalendarPlus, ClipboardList, LayoutGrid } from 'lucide-react';
+import { CalendarPlus, ClipboardList, LayoutGrid, Grid3X3 } from 'lucide-react';
 import { useLocale } from '../../i18n';
 import type { ReservationView } from '../../types/reservationTypes';
 
@@ -33,7 +33,7 @@ export function ReservationHome({ darkMode, userRole, onNavigate }: Props) {
         {rt.subtitle}
       </p>
 
-      <div className={`grid grid-cols-1 ${isAdmin ? 'sm:grid-cols-3' : 'sm:grid-cols-2'} gap-5 w-full ${isAdmin ? 'max-w-3xl' : 'max-w-xl'}`}>
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${isAdmin ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-5 w-full ${isAdmin ? 'max-w-5xl' : 'max-w-3xl'}`}>
         {/* ── New Reservation Card ── */}
         <button
           onClick={() => onNavigate('filters')}
@@ -128,6 +128,37 @@ export function ReservationHome({ darkMode, userRole, onNavigate }: Props) {
             />
           </button>
         )}
+
+        {/* ── Classroom Matrix Card ── */}
+        <button
+          onClick={() => onNavigate('matrix')}
+          className="group relative flex flex-col items-center gap-4 p-8 rounded-2xl border transition-all duration-200 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+          style={{
+            backgroundColor: surface,
+            borderColor: border,
+          }}
+        >
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-110"
+            style={{
+              background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+            }}
+          >
+            <Grid3X3 className="w-7 h-7 text-white" />
+          </div>
+          <div className="text-center">
+            <p style={{ fontSize: '16px', fontWeight: 700, color: text }}>{rt.matrixButton}</p>
+            <p style={{ fontSize: '12px', color: muted, marginTop: 4 }}>{rt.matrixButtonDesc}</p>
+          </div>
+          <div
+            className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+            style={{
+              background: darkMode
+                ? 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(79,70,229,0.08))'
+                : 'linear-gradient(135deg, rgba(99,102,241,0.04), rgba(79,70,229,0.04))',
+            }}
+          />
+        </button>
       </div>
     </div>
   );

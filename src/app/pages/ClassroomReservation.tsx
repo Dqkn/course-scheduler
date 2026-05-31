@@ -7,6 +7,7 @@ import { ReservationResults } from '../components/reservation/ReservationResults
 import { ReservationConfirmModal } from '../components/reservation/ReservationConfirmModal';
 import { ActiveReservations } from '../components/reservation/ActiveReservations';
 import { AllReservationsView } from '../components/reservation/AllReservationsView';
+import { ClassroomMatrixView } from '../components/reservation/ClassroomMatrixView';
 import type { ReservationView, ReservationFilterState, Room } from '../types/reservationTypes';
 
 export function ClassroomReservation() {
@@ -69,6 +70,7 @@ export function ClassroomReservation() {
           darkMode={darkMode}
           onSearch={handleSearch}
           onBack={() => handleNavigate('home')}
+          onManualSearch={() => handleNavigate('matrix')}
         />
       )}
 
@@ -91,6 +93,13 @@ export function ClassroomReservation() {
 
       {view === 'allReservations' && (
         <AllReservationsView
+          darkMode={darkMode}
+          onBack={() => handleNavigate('home')}
+        />
+      )}
+
+      {view === 'matrix' && (
+        <ClassroomMatrixView
           darkMode={darkMode}
           onBack={() => handleNavigate('home')}
         />

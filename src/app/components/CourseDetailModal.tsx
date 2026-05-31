@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-import { X, MapPin, Users, Clock, BookOpen, AlertTriangle, GraduationCap, User } from 'lucide-react';
+import { X, MapPin, Users, Clock, BookOpen, AlertTriangle, GraduationCap, User, Pin, PinOff } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
 import { COURSE_COLORS, DAY_LABELS } from '../data/mockData';
 
 export function CourseDetailModal() {
-  const { selectedCourse, setSelectedCourse, darkMode } = useApp();
+  const { selectedCourse, setSelectedCourse, darkMode, pinnedCourseIds, togglePinCourse } = useApp();
   const { t } = useLocale();
   if (!selectedCourse) return null;
 
@@ -14,6 +14,7 @@ export function CourseDetailModal() {
   const border = darkMode ? color.darkBorder : color.lightBorder;
   const textColor = darkMode ? color.darkText : color.lightText;
   const capacityPct = Math.round((selectedCourse.studentsEnrolled / selectedCourse.totalCapacity) * 100);
+  const isPinned = pinnedCourseIds.includes(selectedCourse.id);
 
   return (
     <div
@@ -52,6 +53,18 @@ export function CourseDetailModal() {
                 >
                   {selectedCourse.type}
                 </span>
+                {isPinned && (
+                  <span
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold"
+                    style={{
+                      backgroundColor: darkMode ? '#422006' : '#fef3c7',
+                      color: '#d97706',
+                    }}
+                  >
+                    <Pin className="w-2.5 h-2.5" />
+                    {t.courseDetail.pinned}
+                  </span>
+                )}
                 {selectedCourse.hasConflict && (
                   <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-400">
                     <AlertTriangle className="w-2.5 h-2.5" />
@@ -181,27 +194,59 @@ export function CourseDetailModal() {
           </div>
         )}
 
-        {/* Actions */}
-        <div
-          className="flex items-center justify-end gap-2 px-6 pb-5"
-        >
-          <button
-            onClick={() => setSelectedCourse(null)}
-            className="px-4 py-2 rounded-lg text-xs font-medium transition-colors"
+        {/* Pinned info */}
+        {isPinned && (
+          <div
+            className="mx-6 mb-4 flex items-start gap-3 p-3 rounded-xl border"
             style={{
-              backgroundColor: 'var(--bg-mute)',
-              color: 'var(--text-faint)',
+              backgroundColor: darkMode ? '#422006' : '#fffbeb',
+              borderColor: darkMode ? '#854d0e' : '#fde68a',
             }}
           >
-            {t.close}
-          </button>
+            <Pin className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#d97706' }} />
+            <p className="text-[11px]" style={{ color: darkMode ? '#fbbf24' : '#92400e' }}>
+              {t.courseDetail.pinnedDesc}
+            </p>
+          </div>
+        )}
+
+        {/* Actions */}
+        <div
+          className="flex items-center justify-between px-6 pb-5"
+        >
           <button
-            className="px-4 py-2 rounded-lg text-xs font-medium text-white transition-colors"
-            style={{ backgroundColor: border }}
-            onClick={() => setSelectedCourse(null)}
+            onClick={() => togglePinCourse(selectedCourse.id)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all hover:scale-105 active:scale-95"
+            style={{
+              backgroundColor: isPinned
+                ? (darkMode ? '#422006' : '#fef3c7')
+                : 'var(--bg-mute)',
+              color: isPinned ? '#d97706' : 'var(--text-muted)',
+              border: isPinned ? '1px solid #d97706' : '1px solid var(--border-light)',
+            }}
           >
-            {t.courseDetail.editCourse}
+            {isPinned ? <PinOff className="w-3.5 h-3.5" /> : <Pin className="w-3.5 h-3.5" />}
+            {isPinned ? t.courseDetail.unpin : t.courseDetail.pin}
           </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSelectedCourse(null)}
+              className="px-4 py-2 rounded-lg text-xs font-medium transition-colors"
+              style={{
+                backgroundColor: 'var(--bg-mute)',
+                color: 'var(--text-faint)',
+              }}
+            >
+              {t.close}
+            </button>
+            <button
+              className="px-4 py-2 rounded-lg text-xs font-medium text-white transition-colors"
+              style={{ backgroundColor: border }}
+              onClick={() => setSelectedCourse(null)}
+            >
+              {t.courseDetail.editCourse}
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { useState, ReactNode } from 'react';
 import { Clock, Users, BookOpen, ChevronDown, BarChart2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
-import { WeeklyGrid } from '../components/WeeklyGrid';
+import { ScheduleTableView } from '../components/ScheduleTableView';
 import { DynamicFilters } from '../components/DynamicFilters';
 import { CourseDetailModal } from '../components/CourseDetailModal';
 import { COURSE_COLORS, DAYS, DayKey, Course } from '../data/mockData';
@@ -167,8 +167,8 @@ export function AcademicView() {
           </div>
         </aside>
 
-        {/* Weekly Grid filtered to this lecturer */}
-        <WeeklyGrid filterFn={c => c.lecturer === currentLecturer} />
+        {/* Schedule table filtered to this lecturer */}
+        <ScheduleTableView filterFn={c => c.lecturer === currentLecturer} />
 
         {/* Mobile Stats panel overlay */}
         {isMobilePanelOpen && (

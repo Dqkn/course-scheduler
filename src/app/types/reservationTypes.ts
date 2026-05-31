@@ -58,9 +58,15 @@ export interface Reservation {
   createdAt: string; // ISO string
   roomCapacity: number;
   roomType: RoomType;
+  /** Optional — course code this reservation is for */
+  courseCode?: string;
+  /** Optional — instructor / requester name */
+  instructorName?: string;
+  /** Optional — purpose or notes */
+  description?: string;
 }
 
-export type ReservationView = 'home' | 'filters' | 'results' | 'active' | 'allReservations';
+export type ReservationView = 'home' | 'filters' | 'results' | 'active' | 'allReservations' | 'matrix';
 
 export interface RoomGrouped {
   block: string;

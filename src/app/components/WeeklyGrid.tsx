@@ -1,6 +1,6 @@
 import { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { AlertTriangle, Clock, MapPin, User } from 'lucide-react';
+import { AlertTriangle, Clock, MapPin, User, Pin } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
 import { COURSE_COLORS, DAYS, DAY_LABELS, Course, DayKey } from '../data/mockData';
@@ -121,7 +121,7 @@ function useCurrentMinute() {
    ═══════════════════════════════════════════════════════════════════════ */
 
 export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
-  const { darkMode, filters, setSelectedCourse, openCourseIds, scheduledCourses, currentUser } = useApp();
+  const { darkMode, filters, setSelectedCourse, openCourseIds, scheduledCourses, currentUser, pinnedCourseIds } = useApp();
   const { t } = useLocale();
   const [hoveredCourse, setHoveredCourse] = useState<HoveredState | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -378,6 +378,7 @@ export function WeeklyGrid({ filterFn, highlightDay }: WeeklyGridProps) {
                     key={course.id}
                     course={course}
                     darkMode={darkMode}
+                    isPinned={pinnedCourseIds.includes(course.id)}
                     onClick={() => setSelectedCourse(course)}
                     onMouseEnter={(e) => handleCourseHover(e, course)}
                   />
@@ -551,11 +552,13 @@ function TooltipContent({ hovered, darkMode }: { hovered: HoveredState; darkMode
 function CourseCard({
   course,
   darkMode,
+  isPinned,
   onClick,
   onMouseEnter,
 }: {
   course: LayoutCourse;
   darkMode: boolean;
+  isPinned: boolean;
   onClick: () => void;
   onMouseEnter: (e: React.MouseEvent<HTMLDivElement>) => void;
 }) {
@@ -612,6 +615,21 @@ function CourseCard({
               : 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 60%)',
           }}
         />
+
+        {/* Pin badge */}
+        {isPinned && !course.hasConflict && (
+          <div className="absolute top-1.5 right-1.5 z-10">
+            <div
+              className="w-4 h-4 rounded-full flex items-center justify-center"
+              style={{
+                backgroundColor: '#d97706',
+                boxShadow: '0 2px 6px rgba(217,119,6,0.5)',
+              }}
+            >
+              <Pin className="w-2.5 h-2.5 text-white" />
+            </div>
+          </div>
+        )}
 
         {/* Conflict badge */}
         {course.hasConflict && (

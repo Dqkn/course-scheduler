@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Calendar, Clock, Building2, Users, Search, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, Building2, Users, Search, AlertCircle, Grid3X3 } from 'lucide-react';
 import { useLocale } from '../../i18n';
 import {
   ALL_TIME_SLOTS,
@@ -14,9 +14,10 @@ interface Props {
   darkMode: boolean;
   onSearch: (filters: ReservationFilterState) => void;
   onBack: () => void;
+  onManualSearch?: () => void;
 }
 
-export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
+export function ReservationFilters({ darkMode, onSearch, onBack, onManualSearch }: Props) {
   const { t, locale } = useLocale();
   const rt = t.reservation;
 
@@ -230,19 +231,40 @@ export function ReservationFilters({ darkMode, onSearch, onBack }: Props) {
           </div>
         )}
 
-        {/* Search Button */}
-        <button
-          onClick={handleSearch}
-          className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-          style={{
-            fontSize: '14px',
-            background: 'var(--brand-gradient)',
-            color: '#ffffff',
-          }}
-        >
-          <Search className="w-4 h-4" />
-          {rt.searchRooms}
-        </button>
+        {/* Search Button + Manuel Arama */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <button
+            onClick={handleSearch}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-xl font-semibold shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+            style={{
+              fontSize: '14px',
+              background: 'var(--brand-gradient)',
+              color: '#ffffff',
+            }}
+          >
+            <Search className="w-4 h-4" />
+            {rt.searchRooms}
+          </button>
+
+          {onManualSearch && (
+            <>
+              <span style={{ fontSize: '12px', color: muted }}>{rt.manualSearchDesc}</span>
+              <button
+                onClick={onManualSearch}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl font-semibold border transition-all hover:scale-[1.02] active:scale-[0.98]"
+                style={{
+                  fontSize: '14px',
+                  borderColor: border,
+                  backgroundColor: surface,
+                  color: text,
+                }}
+              >
+                <Grid3X3 className="w-4 h-4" style={{ color: '#6366f1' }} />
+                {rt.manualSearch}
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

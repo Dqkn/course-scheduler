@@ -1,24 +1,35 @@
-import { CheckCircle2, Download, RefreshCw, BarChart2, X } from 'lucide-react';
+import { CheckCircle2, Download, RefreshCw, BarChart2, X, Link2, Shield } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useLocale } from '../i18n';
 import { LoginScreen } from '../components/LoginScreen';
 import { DynamicFilters } from '../components/DynamicFilters';
-import { WeeklyGrid } from '../components/WeeklyGrid';
 import { StatusPanel } from '../components/StatusPanel';
 import { CourseDetailModal } from '../components/CourseDetailModal';
 import { CourseManagementModal } from '../components/CourseManagementModal';
+import { ConstraintPanel } from '../components/ConstraintPanel';
+import { ConstraintDefinitionPanel } from '../components/ConstraintDefinitionPanel';
+import { ScheduleTableView } from '../components/ScheduleTableView';
+import { ProgressStepper } from '../components/ProgressStepper';
+import { PublishValidationModal } from '../components/PublishValidationModal';
 import { useState } from 'react';
 
 export function AdminDashboard() {
-  const { darkMode, publishedAt, setPublishedAt, selectedCourse, setIsManageModalOpen, isCalculating, runAlgorithm, scheduledCourses, selectedTerm, setSelectedTerm, currentUser } = useApp();
+  const { darkMode, publishedAt, setPublishedAt, selectedCourse, setIsManageModalOpen, isCalculating, runAlgorithm, scheduledCourses, selectedTerm, setSelectedTerm, currentUser, linkedGroups, constraints } = useApp();
   const { t, locale } = useLocale();
   const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(false);
+  const [isLinkingOpen, setIsLinkingOpen] = useState(false);
+  const [isConstraintDefOpen, setIsConstraintDefOpen] = useState(false);
+  const [isValidationOpen, setIsValidationOpen] = useState(false);
 
   if (!currentUser || currentUser.role === 'instructor') {
     return <LoginScreen portalType="admin" />;
   }
 
-  function handlePublish() {
+  function openPublishValidation() {
+    setIsValidationOpen(true);
+  }
+
+  function handlePublishConfirm() {
     const now = new Date();
     const formatted = now.toLocaleDateString(locale === 'tr' ? 'tr-TR' : 'en-GB', {
       day: '2-digit', month: 'short', year: 'numeric',
@@ -93,6 +104,59 @@ export function AdminDashboard() {
             <Download className="w-3.5 h-3.5" />
             {t.admin.export}
           </button>
+          <button
+            onClick={() => setIsLinkingOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all hover:scale-105 active:scale-95"
+            style={{
+              fontSize: '13px',
+              backgroundColor: linkedGroups.length > 0
+                ? (darkMode ? '#1e3a5f' : '#e0f2fe')
+                : 'var(--bg-mute)',
+              color: linkedGroups.length > 0
+                ? 'var(--brand-primary)'
+                : 'var(--text-muted)',
+              border: linkedGroups.length > 0 ? '1px solid var(--brand-primary)' : 'none',
+            }}
+          >
+            <Link2 className="w-3.5 h-3.5" />
+            {t.constraints.title}
+            {linkedGroups.length > 0 && (
+              <span
+                className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold"
+                style={{
+                  backgroundColor: 'var(--brand-primary)',
+                  color: 'var(--brand-on-primary)',
+                }}
+              >
+                {linkedGroups.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setIsConstraintDefOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-semibold transition-all hover:scale-105 active:scale-95"
+            style={{
+              fontSize: '13px',
+              backgroundColor: constraints.length > 0
+                ? (darkMode ? '#422006' : '#fef3c7')
+                : 'var(--bg-mute)',
+              color: constraints.length > 0
+                ? '#d97706'
+                : 'var(--text-muted)',
+              border: constraints.length > 0 ? '1px solid #d97706' : 'none',
+            }}
+          >
+            <Shield className="w-3.5 h-3.5" />
+            {t.constraintDef.title}
+            {constraints.length > 0 && (
+              <span
+                className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold"
+                style={{ backgroundColor: '#d97706', color: '#fff' }}
+              >
+                {constraints.length}
+              </span>
+            )}
+          </button>
           {/* Term selector */}
           <select
             value={selectedTerm}
@@ -139,17 +203,29 @@ export function AdminDashboard() {
         </div>
       </div>
 
+      {/* Progress Stepper */}
+      <ProgressStepper
+        onStepCourses={() => setIsManageModalOpen(true)}
+        onStepConstraints={() => {
+          if (isLinkingOpen || isConstraintDefOpen) return;
+          setIsLinkingOpen(true);
+        }}
+        onStepAlgorithm={() => {
+          if (!isCalculating) runAlgorithm();
+        }}
+        onStepPublish={openPublishValidation}
+      />
+
       {/* Filters */}
       <DynamicFilters />
 
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Grid */}
-        <WeeklyGrid />
+        <ScheduleTableView />
 
         {/* Desktop Status panel (lg and up) */}
         <div className="hidden lg:flex shrink-0">
-          <StatusPanel onPublish={handlePublish} />
+          <StatusPanel onPublish={openPublishValidation} />
         </div>
         
         {/* Mobile Status panel overlay */}
@@ -167,7 +243,7 @@ export function AdminDashboard() {
               >
                 <X className="w-4 h-4" />
               </button>
-              <StatusPanel onPublish={handlePublish} isMobile={true} />
+              <StatusPanel onPublish={openPublishValidation} isMobile={true} />
             </div>
           </div>
         )}
@@ -178,6 +254,20 @@ export function AdminDashboard() {
 
       {/* Course management modal for Opening/Closing courses */}
       <CourseManagementModal />
+
+      {/* Course linking panel */}
+      {isLinkingOpen && <ConstraintPanel onClose={() => setIsLinkingOpen(false)} />}
+
+      {/* Constraint definition panel */}
+      {isConstraintDefOpen && <ConstraintDefinitionPanel onClose={() => setIsConstraintDefOpen(false)} />}
+
+      {/* Publish validation modal */}
+      {isValidationOpen && (
+        <PublishValidationModal
+          onClose={() => setIsValidationOpen(false)}
+          onConfirm={handlePublishConfirm}
+        />
+      )}
     </div>
   );
 }

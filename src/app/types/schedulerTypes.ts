@@ -64,6 +64,24 @@ export interface ScheduleStats {
   totalRooms: number;
 }
 
+/** A group of courses that must be scheduled at the same day/time slot. */
+export interface LinkedCourseGroup {
+  id: string;
+  courseCodes: string[];
+}
+
+export type DayOfWeek = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri';
+export type ConstraintType = 'instructor_unavailable' | 'course_fixed' | 'course_blocked';
+
+export interface SchedulerConstraint {
+  id: string;
+  type: ConstraintType;
+  /** instructor_full_name for instructor constraints, course_code for course constraints. */
+  target: string;
+  day: DayOfWeek;
+  hour: number;
+}
+
 /** Full payload returned by POST /api/scheduler/run. */
 export interface SchedulerResult {
   courses: Course[];

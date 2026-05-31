@@ -25,6 +25,8 @@
 
 import type {
   AlgorithmInput,
+  LinkedCourseGroup,
+  SchedulerConstraint,
   SchedulerResult,
   TermType,
 } from '../types/schedulerTypes';
@@ -39,11 +41,23 @@ export async function fetchAlgorithmInputs(): Promise<AlgorithmInput[]> {
 export async function runScheduler(
   courses: AlgorithmInput[],
   term: TermType,
+  linkedGroups: LinkedCourseGroup[] = [],
+  constraints: SchedulerConstraint[] = [],
 ): Promise<SchedulerResult> {
   if (DEMO_MODE) return runDemoScheduler(courses, term);
   return request<SchedulerResult>('/scheduler/run', {
     method: 'POST',
-    body: { courses, term },
+    body: {
+      courses,
+      term,
+      linked_groups: linkedGroups.map(g => g.courseCodes),
+      constraints: constraints.map(c => ({
+        type: c.type,
+        target: c.target,
+        day: c.day,
+        hour: c.hour,
+      })),
+    },
   });
 }
 

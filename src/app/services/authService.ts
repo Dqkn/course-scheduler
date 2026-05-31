@@ -46,6 +46,24 @@ export async function logout(): Promise<void> {
   }
 }
 
+/**
+ * Re-verify credentials without changing the current session.
+ * Used for confirming identity before critical actions (e.g. reservation).
+ */
+export async function verifyCredentials(username: string, password: string): Promise<boolean> {
+  if (DEMO_MODE) {
+    return demoLogin(username, password) !== null;
+  }
+  // Backend: could POST /api/auth/verify or re-validate via login without storing token
+  try {
+    const body: LoginRequest = { username, password };
+    await request<LoginResponse>('/auth/login', { method: 'POST', body, noAuth: true });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function getCurrentUser(): Promise<Account | null> {
   if (DEMO_MODE) return null; // in demo mode the cached account is the source of truth
   try {
